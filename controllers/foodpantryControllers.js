@@ -1,6 +1,7 @@
 const foodpantryDAO = require('../models/foodpantryModel');
 const userDao = require("../models/userModel.js");
 const db = new foodpantryDAO();
+const jwt = require("jsonwebtoken");
 
 db.init();
 
@@ -36,8 +37,36 @@ exports.show_register_page = function (req, res) {
     res.render("user/register");
 }
 
+
+
 exports.show_about_page = function (req, res) {
-    res.render("about");
+    
+    const myCookieValue = req.cookies['jwt'];
+
+
+    jwt.verify(myCookieValue, process.env.ACCESS_TOKEN_SECRET, function(err, decoded) {
+        if (err) {
+            console.log('Error verifying token:', err);
+            res.render("about");
+            return;
+        } else {
+            const username = decoded.username;
+            console.log('Getting Username:', username);
+            console.log('Getting dec:', decoded);
+
+            
+            res.render("about", {
+                user:"user"
+            });
+        
+        
+        }
+    });
+    
+    
+    
+    
+    
 }
 
 exports.loggedIn_landing = function (req, res) {
@@ -85,8 +114,24 @@ exports.post_new_entry = function (req, res) {
         response.status(400).send("Entries must have an food title.");
         return;
     }
-    db.addEntry(req.body.foodtitle, req.body.foodimg, req.body.foodexp, req.body.fooddesc, req.body.foodtitle);
-    res.redirect("/loggedIn");
+
+    const myCookieValue = req.cookies['jwt'];
+
+    jwt.verify(myCookieValue, process.env.ACCESS_TOKEN_SECRET, function(err, decoded) {
+        if (err) {
+            console.error('Error verifying token:', err);
+            res.status(500).send("Error verifying token");
+            return;
+        } else {
+            const username = decoded.username;
+            console.log('Getting Username:', username);
+            console.log('Getting dec:', decoded);
+
+            // Perform database operation after getting email
+            db.addEntry(req.body.foodtitle, req.body.foodimg, req.body.foodexp, req.body.fooddesc, username);
+            res.redirect("/loggedIn");
+        }
+    });
 }
 
 exports.show_login_page = function (req, res) {
@@ -118,13 +163,15 @@ exports.post_new_user = function (req, res) {
 }
 
 exports.show_user_entries = function (req, res) {
-    console.log('filtering author name', req.params.author);
-    let user = req.params.author;
+    console.log('filtering author name', req.params.user);
+    let user = req.params.user;
     db.getEntriesByUser(user).then(
         (entries) => {
             res.render('entries', {
                 'title': 'Users items',
+                'user': 'user',
                 'entries': entries
+                
             });
         }).catch((err) => {
             console.log('error handling author posts', err);

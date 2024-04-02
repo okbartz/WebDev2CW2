@@ -1,5 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="/"><img src="Images/logo.png" alt="logo"></a>
+  <a class="navbar-brand" href="/"><img src="https://scottishpantrynetwork.org.uk/wp-content/uploads/2020/09/scottish-pantry-network-logo.jpg" 
+  alt="logo" width="50" height="10%"></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -9,12 +10,18 @@
       <li class="nav-item active">
         <a class="nav-link" href="/">Home</a>
       </li>
+     {{#user}}
+      <li class="nav-item">
+        <a class="nav-link" href="/loggedin">View items</a>
+      </li>
       <li class="nav-item">
         <a class="nav-link" href="/new">Provide</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/loggedin">View items</a>
+      <a id="logout" class="nav-link" href="/logout">Sign out</a>
       </li>
+      {{/user}}
+      {{^user}}
        <li class="nav-item">
         <a class="nav-link" href="/login">Login</a>
       </li>
@@ -22,6 +29,7 @@
        <li class="nav-item">
         <a class="nav-link" href="/register">Register</a>
       </li>
+      {{/user}}
       {{! <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Dropdown

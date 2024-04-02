@@ -21,6 +21,7 @@ router.post('/new', controller.post_new_entry);
 
 router.get('/peter', controller.peters_entries);
 
+
 router.get('/register', controller.show_register_page);
 router.post('/register', controller.post_new_user);
 router.get('/login', controller.show_login_page);
@@ -33,7 +34,7 @@ router.get("/about", controller.show_about_page);
 //     res.redirect('/about.html');
 // })
 
-router.get('/posts/:author', controller.show_user_entries);
+router.get('/posts/:user', controller.show_user_entries);
 
 router.use(function (req, res) {
     res.status(404);

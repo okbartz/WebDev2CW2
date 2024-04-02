@@ -7,22 +7,6 @@
 {{>navbar}}
 <h1>{{title}}</h1>
 
-<div class="text-right" style="margin-bottom: 1em;">
-{{^user}}
-<a id="register" href="/register" class="btn btn-primary">
-Register
-</a>
-<a id="login" href="/login" class="btn btn-primary">
-Sign in
-</a>
-{{/user}}
-{{#user}}
-<a id="logout" href="/logout" class="btn btn-primary">
-Sign out
-</a>
-{{/user}}
-</div>
-
 <div class="text-right">
 <a href="/new" class="btn btn-primary">
 Write in the foodpantry
@@ -37,12 +21,12 @@ Write in the foodpantry
 <p>
 {{fooddesc}}
 </p>
-<b>Food expires::</b>
+<b>Food expires:</b>
 <p>
 {{foodexp}}
 </p>
 <div class="card-footer">
-<p>Written by <a href="/posts/{{author}}">{{author}}</a>, on {{published}}</p>
+<p>Written by <a href="/posts/{{user}}">{{user}}</a>, on {{published}}</p>
 </div>
 </div>
 <hr>
