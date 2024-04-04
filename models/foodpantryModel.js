@@ -21,17 +21,19 @@ class foodpantry {
             foodexp: '2020-02-16',
             published: '2020-02-16',
             fooddesc: '12 pack',
-            user: 'Peter'
+            user: 'Peter',
+            userid: 'AAAA'
         });
         //for later debugging
         console.log('db entry Peter inserted');
         this.db.insert({
             foodtitle: 'Apple',
             foodimg: 'https',
-            foodexp: '2020-02-16',
-            published: '2020-02-16',
+            foodexp: '2025-02-16',
+            published: '2025-02-16',
             fooddesc: 'Red',
-            user: 'Ann'
+            user: 'Ann',
+            userid: 'BBBB'
         });
         //for later debugging
         console.log('db entry Ann inserted');
@@ -95,7 +97,7 @@ class foodpantry {
         })
     }
 
-    addEntry(foodtitle, foodimg, foodexp, fooddesc, user) {
+    addEntry(foodtitle, foodimg, foodexp, fooddesc, user, userid) {
         var entry = {
             foodtitle: foodtitle,
             foodimg: foodimg,
@@ -103,6 +105,7 @@ class foodpantry {
             published: new Date().toISOString().split('T')[0],
             fooddesc: fooddesc,
             user: user,
+            userid: userid
         }
         console.log('entry created', entry);
         this.db.insert(entry, function (err, doc) {
@@ -114,10 +117,10 @@ class foodpantry {
         })
     }
 
-    getEntriesByUser(user) {
+    getEntriesByUser(userid) {
         return new Promise((resolve, reject) => {
             this.db.find({
-                'user': user
+                'userid': userid
             }, function (err, entries) {
                 if (err) {
                     reject(err);
@@ -142,8 +145,24 @@ class foodpantry {
         })
     }
 
+    delete(itemid) {
+        this.db.remove({
+            '_id':
+            itemid
+        }, function (err, entries) {
+            if (err) {
+                console.log("Can't find user:", itemid);
+                return
+                cb(null, null);
+            }
+        });
+    }
+
+
 
 }
+
+
 
 function checkOOD(date){
     var CurrentDate = new Date();

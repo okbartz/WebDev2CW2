@@ -1,6 +1,9 @@
 const foodpantryDAO = require('../models/foodpantryModel');
 const userDao = require("../models/userModel.js");
+const adminDao = require("../models/adminModel.js");
 const db = new foodpantryDAO();
+const db2 = new require("../models/userModel");
+const db3 = new require("../models/adminModel");
 const jwt = require("jsonwebtoken");
 
 db.init();
@@ -37,6 +40,69 @@ exports.show_register_page = function (req, res) {
     res.render("user/register");
 }
 
+exports.show_admin_page = function (req, res) {
+            res.render("adminpanel", {
+                admin: "admin",
+                user:"user",
+            })
+       
+        
+
+}
+
+exports.show_admin_users = function (req, res) {
+    db2.getAllEntries()
+        .then((list) => {
+            res.render("adminpanelUser", {
+                admin: "admin",
+                user:"user",
+                entries: list
+            });
+            console.log("promise resolved");
+        })
+        .catch((err) => {
+            // console.log("promise rejected", err);
+            res.redirect("/login")
+        });
+        
+
+}
+
+exports.show_admin_admins = function (req, res) {
+    db3.getAllEntries()
+        .then((list) => {
+            res.render("adminpanelAdmin", {
+                admin: "admin",
+                user:"user",
+                entries: list
+            });
+            console.log("promise resolved");
+        })
+        .catch((err) => {
+            // console.log("promise rejected", err);
+            res.redirect("/login")
+        });
+        
+
+}
+
+exports.show_admin_posts = function (req, res) {
+    db.getAllEntries()
+        .then((list) => {
+            res.render("adminpanelPosts", {
+                admin: "admin",
+                user:"user",
+                entries: list
+            });
+            console.log("promise resolved");
+        })
+        .catch((err) => {
+            // console.log("promise rejected", err);
+            res.redirect("/login")
+        });
+        
+
+}
 
 
 exports.show_about_page = function (req, res) {
@@ -123,15 +189,39 @@ exports.post_new_entry = function (req, res) {
             res.status(500).send("Error verifying token");
             return;
         } else {
+            if(!decoded.userid){
+                res.status(500).send("Error not a user");
+            return;
+            }
+            const userid = decoded.userid;
             const username = decoded.username;
             console.log('Getting Username:', username);
-            console.log('Getting dec:', decoded);
+            console.log('Getting dec:', userid);
 
             // Perform database operation after getting email
-            db.addEntry(req.body.foodtitle, req.body.foodimg, req.body.foodexp, req.body.fooddesc, username);
+            db.addEntry(req.body.foodtitle, req.body.foodimg, req.body.foodexp, req.body.fooddesc, username,userid);
             res.redirect("/loggedIn");
         }
     });
+}
+
+
+exports.post_delete_user = function (req, res) {
+    console.log('deleting user', req.params.userid);
+    let user = req.params.userid;
+    console.log("userid", user);
+    userDao.delete(user);
+    res.redirect('/admin');
+
+}
+
+exports.post_delete_posts = function (req, res) {
+    console.log('deleting post', req.params.postid);
+    let user = req.params.postid;
+    console.log("postid", user);
+    db.delete(user);
+    res.redirect('/admin');
+
 }
 
 exports.show_login_page = function (req, res) {
@@ -145,26 +235,43 @@ exports.post_new_user = function (req, res) {
     const password = req.body.pass;
     const confpassword = req.body.confpassword;
 
-
-
     if (!email || !password) {
-        res.send(401,
-            'no email or no password'); return;
+        return res.status(401).send('No email or no password');
     }
-    userDao.lookup(email, function (err, u) {
-        if (u) {
-            res.send(401, "User exists:", email); return;
+
+    userDao.lookup(email, function (err, user) {
+        if (err) {
+            console.error("Error looking up user:", err);
+            return res.status(500).send('Internal Server Error');
         }
-        userDao.create(email,fname,sname,password,confpassword);
-        
-        console.log("register user", email, "password", password);
-        res.redirect('/login');
-    });
+
+        if (user) {
+            return res.status(401).send("User already exists: " + email);
+        }
+
+        adminDao.lookup(email, function (err, admin) {
+            if (err) {
+                console.error("Error looking up admin:", err);
+                return res.status(500).send('Internal Server Error');
+            }
+
+            if (admin) {
+                return res.status(401).send("Admin already exists: " + email);
+            }
+
+            
+        });
+    }
+    );
+    console.log("PASSED ERRORS")
+    userDao.create(email, fname, sname, password, confpassword);
+    res.redirect('/login');
+
 }
 
 exports.show_user_entries = function (req, res) {
-    console.log('filtering author name', req.params.user);
-    let user = req.params.user;
+    console.log('filtering author name', req.params.userid);
+    let user = req.params.userid;
     db.getEntriesByUser(user).then(
         (entries) => {
             res.render('entries', {

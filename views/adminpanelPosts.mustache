@@ -1,0 +1,56 @@
+<html>
+<head>
+{{>header}}
+</head>
+
+<body>
+<body>
+{{>navbar}}
+<h1>admin Panel</h1>
+<p>Hello this is the admin panel</p>
+
+<h2>Users</h2>
+
+{{^entries}}
+<b>No entries yet.</b>
+{{/entries}}
+
+<table style="width:100%">
+  <tr>
+    <th>foodtitle</th>
+    <th>foodexp</th>
+    <th>published</th>
+    <th>fooddesc</th>
+    <th>user</th>
+    <th>userid</th>
+    <th>EDIT</th>
+    <th>DELETE</th>
+
+  </tr>
+  {{#entries}}
+  <tr>
+    <td><a href="/posts/{{userid}}">{{userid}}<a></td>
+    <td>{{foodtitle}}</td>
+    <td>{{foodexp}}</td>
+    <td>{{published}}</td>
+    <td>{{fooddesc}}</td>
+    <td>{{user}}</td>
+    <td><a href="#edit_thing">EDIT</a></td>
+    <td><a href="/deletePost/{{_id}}">DELETE</a></td>
+    
+  </tr>
+{{/entries}}
+</table>
+
+
+
+<section id="edit_thing">
+<h1>Edit Post</h1>
+
+
+</section>
+
+
+
+</body>
+</html>

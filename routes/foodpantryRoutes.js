@@ -4,6 +4,7 @@ const controller = require('../controllers/foodpantryControllers.js');
 
 const {login} = require('../auth/auth.js');
 const {verify} = require('../auth/auth.js');
+const {verifyAdmin} = require('../auth/auth.js');
 router.get('/new', verify, controller.show_new_entries);
 router.post('/login', login,controller.handle_login);
 
@@ -18,8 +19,15 @@ router.get('/foodpantry', controller.entries_list);
 
 router.get('/new', controller.new_entries);
 router.post('/new', controller.post_new_entry);
+router.get('/deleteUser/:userid', controller.post_delete_user);
+router.get('/deletePost/:postid', controller.post_delete_posts);
 
 router.get('/peter', controller.peters_entries);
+router.get('/admin',verifyAdmin, controller.show_admin_page);
+router.get('/adminPanelUser',verifyAdmin, controller.show_admin_users);
+router.get('/adminPanelPosts',verifyAdmin, controller.show_admin_posts);
+router.get('/adminPanelAdmin',verifyAdmin, controller.show_admin_admins);
+router.get('/adminPanelPantry',verifyAdmin, controller.show_admin_users);
 
 
 router.get('/register', controller.show_register_page);
@@ -34,7 +42,7 @@ router.get("/about", controller.show_about_page);
 //     res.redirect('/about.html');
 // })
 
-router.get('/posts/:user', controller.show_user_entries);
+router.get('/posts/:userid', controller.show_user_entries);
 
 router.use(function (req, res) {
     res.status(404);

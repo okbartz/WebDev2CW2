@@ -1,7 +1,10 @@
 const Datastore = require("gray-nedb");
-const bcrypt = require('bcrypt'); const
-    saltRounds = 10;
-class UserDAO {
+const bcrypt = require('bcrypt'); 
+const userDao = require('./userModel.js');
+
+const saltRounds = 10;
+
+class AdminDAO {
     constructor(dbFilePath) {
         if
             (dbFilePath) { //embedded 
@@ -15,12 +18,14 @@ class UserDAO {
     // for the demo the password is the bcrypt of the username
     init() {
         this.db.insert({
+            admin: 'true',
             email: 'ExampleEmail3@email.com', 
             fname: 'bob', 
             sname: 'doe', 
             password: "$2b$10$NwOTFkWPsGKKy3eP8WJZUuidqW46ZAD26xzWaPdzdbFHCy3Yk1Cxi"
         });
         this.db.insert({
+            admin: 'true',
             email: 'ExampleEmail2@email.com',
             fname: 'john', 
             sname: 'doe', 
@@ -67,5 +72,5 @@ class UserDAO {
         });
     }
 } const dao = new
-    UserDAO(); dao.init();
+    AdminDAO(); dao.init();
 module.exports = dao;
