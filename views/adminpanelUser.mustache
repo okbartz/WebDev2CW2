@@ -21,6 +21,7 @@
     <th>FirstName</th>
     <th>SecondName</th>
     <th>Email</th>
+    <th>ispantry</th>
     <th>EDIT</th>
     <th>DELETE</th>
     
@@ -31,6 +32,7 @@
     <td>{{fname}}</td>
     <td>{{sname}}</td>
     <td>{{email}}</td>
+    <td>{{ispantry}}</td>
     <td><a href="#edit_thing">EDIT</a></td>
     <td><a href="/deleteUser/{{_id}}">DELETE</a></td>
     
@@ -39,14 +41,52 @@
 </table>
 
 
-
+<hr>
 <section id="edit_thing">
+<div class="container">
 <h1>Edit User</h1>
+<form method="post" action="/editUser" role="/editUser">
+    <div class="form-group">
+        {{user-name-error}}
+        <label for="UserId">UserId to change details for</label>
+        <input type="text" class="form-control" id="UserId" name="UserId" placeholder="Enter UserId address" required>
+    </div>
+    <div class="form-group">
+       
+        <label for="forename">FirstName</label>
+        <input type="text" class="form-control" id="forename" name="forename" placeholder="Enter forename" required>
+    </div>
+    <div class="form-group">
+       
+        <label for="surname">SecondName</label>
+        <input type="text" class="form-control" id="surname" name="surname" placeholder="Enter surname" required>
+    </div>
+    <div class="form-group">
+        <label for="emailaddress">Email</label>
+        <input type="text" class="form-control" id="emailaddress" name="emailaddress" placeholder="Enter email address" required>
+    </div>
+       <div class="form-group">
+        <label for="pass">Password</label>
+        <input type="text" class="form-control" id="pass" name="pass" placeholder="Enter password" required>
+    </div>
+    <div class="form-group">
+        <label id="ispantry" for="ispantry">user is pantry:</label>
+    
+    <select id="ispantry" name="ispantry">
+    <option value=false>No</option>
+    <option value=true>Yes</option>
+    </select>
 
-
+    </div>
+    <br>
+    <div class="form-group">
+        <input type="submit" value="Edit" class="btn btn-primary">
+    </div>
+</form>
+</div>
 </section>
 
-
+<a class="btn btn-primary" href="#edit_thing">Add a new member</a >
 
 </body>
 </html>

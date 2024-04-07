@@ -1,0 +1,43 @@
+<html>
+<head>
+{{>header}}
+</head>
+
+<body>
+<body>
+{{>navbar}}
+<h1>admin Panel</h1>
+<p>Hello this is the admin panel</p>
+
+<h2>Messages</h2>
+
+{{^entries}}
+<b>No entries yet.</b>
+{{/entries}}
+
+<table style="width:100%">
+  <tr>
+    <th>email address</th>
+    <th>subject</th>
+    <th>message</th>
+    <th>published</th>
+    <th>ID</th>
+    <th>DELETE</th>
+
+  </tr>
+  {{#entries}}
+  <tr>
+    <td>{{emailaddress}}</td>
+    <td>{{subject}}</td>
+    <td>{{message}}</td>
+    <td>{{published}}</td>
+    <td>{{_id}}</td>
+    <td><a href="/deleteMessage/{{_id}}">DELETE</a></td>
+    
+  </tr>
+{{/entries}}
+</table>
+
+
+</body>
+</html>

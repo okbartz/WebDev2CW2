@@ -19,7 +19,8 @@ class UserDAO {
             email: 'ExampleEmail1@email.com', 
             fname: 'bob', 
             sname: 'doe', 
-            password: "$2b$10$NwOTFkWPsGKKy3eP8WJZUuidqW46ZAD26xzWaPdzdbFHCy3Yk1Cxi"
+            password: "$2b$10$NwOTFkWPsGKKy3eP8WJZUuidqW46ZAD26xzWaPdzdbFHCy3Yk1Cxi",
+            ispantry: false
         });
         
         this.db.insert({
@@ -27,7 +28,8 @@ class UserDAO {
             fname: 'john', 
             sname: 'doe', 
             password:
-                '$2b$10$bnEYkqZM.MhEF/LycycymOeVwkQONq8kuAUGx6G5tF9UtUcaYDs3S'
+                '$2b$10$NwOTFkWPsGKKy3eP8WJZUuidqW46ZAD26xzWaPdzdbFHCy3Yk1Cxi',
+                ispantry: true
         }); return
         this;
     }
@@ -41,6 +43,7 @@ class UserDAO {
                 fname: fname, 
                 sname: sname,
                 password: hash,
+                ispantry: false
             }; 
             
             if(password === confpassword){
@@ -50,6 +53,31 @@ class UserDAO {
                 }
             });
         }});
+    }
+
+    update(userid,email,fname,sname,
+        password, ispantry) {
+        const that = this;
+        bcrypt.hash(password, saltRounds).then(function (hash) {
+            var entry = {
+                userid: userid,
+                email: email, 
+                fname: fname, 
+                sname: sname,
+                password: hash,
+                ispantry: ispantry
+            }; 
+            
+            that.db.update({_id: userid}, 
+                { $set: entry }, (err, numUsersUpdated, updatedUser) => {
+                if (err) return callback(null, err);
+                
+            })
+
+
+
+            
+        });
     }
     
     delete(userid) {
@@ -104,6 +132,24 @@ class UserDAO {
         })
     }
 
+     userispantry(userID) {
+        return new Promise((resolve, reject) => {
+            this.db.find({"_id": userID}, function (err, entries) {
+                if (err) {
+                    reject(err); // If there's an error, reject the promise
+                } else {
+                    if (entries.length > 0) {
+                        // Assuming `_id` is unique and there's only one entry
+                        const ispantry = entries[0].ispantry;
+                        console.log('function all() returns: ', ispantry);
+                        resolve(ispantry); // Resolve the promise with the value of ispantry
+                    } else {
+                        reject(new Error("User not found")); // Reject if user is not found
+                    }
+                }
+            });
+        });
+    }
 
 
 } const dao = new

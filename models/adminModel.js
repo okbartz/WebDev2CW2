@@ -15,7 +15,7 @@ class AdminDAO {
             this.db = new Datastore();
         }
     }
-    // for the demo the password is the bcrypt of the username
+   
     init() {
         this.db.insert({
             admin: 'true',

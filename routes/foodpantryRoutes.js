@@ -15,17 +15,27 @@ router.get("/", controller.show_about_page);
 router.get('/foodpantry', controller.entries_list);
 
 
-// router.get('/new', controller.new_entry);
+//CONTACT ROUTES
+router.get('/contact', controller.new_message);
+router.post('/contact', controller.post_new_message);
 
+
+//ENTRIES ROUTES
 router.get('/new', controller.new_entries);
 router.post('/new', controller.post_new_entry);
-router.get('/deleteUser/:userid', controller.post_delete_user);
-router.get('/deletePost/:postid', controller.post_delete_posts);
 
-router.get('/peter', controller.peters_entries);
+//ADMIN FUNCTION ROUTES
+router.get('/deleteUser/:userid',verifyAdmin, controller.post_delete_user);
+router.get('/deletePost/:postid',verifyAdmin, controller.post_delete_posts);
+router.get('/deleteMessage/:_id',verifyAdmin, controller.post_delete_message);
+
+router.post('/editUser',verifyAdmin, controller.update_user);
+
+
 router.get('/admin',verifyAdmin, controller.show_admin_page);
 router.get('/adminPanelUser',verifyAdmin, controller.show_admin_users);
 router.get('/adminPanelPosts',verifyAdmin, controller.show_admin_posts);
+router.get('/adminPanelMessages',verifyAdmin, controller.show_messages);
 router.get('/adminPanelAdmin',verifyAdmin, controller.show_admin_admins);
 router.get('/adminPanelPantry',verifyAdmin, controller.show_admin_users);
 

@@ -1,20 +1,25 @@
 const foodpantryDAO = require('../models/foodpantryModel');
 const userDao = require("../models/userModel.js");
 const adminDao = require("../models/adminModel.js");
+const contactDao = require("../models/contactModel.js");
+
 const db = new foodpantryDAO();
-const db2 = new require("../models/userModel");
-const db3 = new require("../models/adminModel");
+const dbUser = new require("../models/userModel");
+const dbAdmin = new require("../models/adminModel");
+const dbContact = new contactDao();
 const jwt = require("jsonwebtoken");
 
 db.init();
+dbAdmin.init();
+dbContact.init();
 
 // exports.entries_list = function (req, res) {
 //     res.send('<h1>foodpantry Messages</h1><p>Not yet implemented: will show a list of food pantry entries.</p> ');
 // }
 
+
 exports.entries_list = function (req, res) {
-    res.send('<h1>Not yet implemented: show a list of food pantry entries.</h1>');
-    db.getAllEntries();
+    res.send('<h1>foodpantry Messages</h1><p>Not yet implemented: will show a list of food pantry entries.</p> ');
 }
 
 exports.peters_entries = function (req, res) {
@@ -51,7 +56,7 @@ exports.show_admin_page = function (req, res) {
 }
 
 exports.show_admin_users = function (req, res) {
-    db2.getAllEntries()
+    dbUser.getAllEntries()
         .then((list) => {
             res.render("adminpanelUser", {
                 admin: "admin",
@@ -68,8 +73,26 @@ exports.show_admin_users = function (req, res) {
 
 }
 
+exports.show_messages = function (req, res) {
+    dbContact.getAllMessages()
+        .then((list) => {
+            res.render("adminpanelMessages", {
+                admin: "admin",
+                user:"user",
+                entries: list
+            });
+            console.log("promise resolved");
+        })
+        .catch((err) => {
+            // console.log("promise rejected", err);
+            res.redirect("/login")
+        });
+        
+
+}
+
 exports.show_admin_admins = function (req, res) {
-    db3.getAllEntries()
+    dbAdmin.getAllEntries()
         .then((list) => {
             res.render("adminpanelAdmin", {
                 admin: "admin",
@@ -136,21 +159,68 @@ exports.show_about_page = function (req, res) {
 }
 
 exports.loggedIn_landing = function (req, res) {
-    db.getAllEntries()
-        .then((list) => {
-            res.render("entries", {
-                title: "Provided Items",
-                entries: list, user:
-                    "user"
-            });
-            console.log("promise resolved");
-        })
-        .catch((err) => {
-            // console.log("promise rejected", err);
-            res.redirect("/login")
-        });
-};
+    const myCookieValue = req.cookies['jwt'];
 
+    jwt.verify(myCookieValue, process.env.ACCESS_TOKEN_SECRET, function(err, decoded) {
+        if (err) {
+            console.log('Error verifying token:', err);
+            res.render("about");
+            return;
+        } else {
+            const userid1 = decoded.userid;
+            console.log('Getting Username:', userid1);
+            console.log('Getting dec:', decoded);
+
+            var isPantry1;
+
+            dbUser.userispantry(userid1)
+                .then((ispantry) => {
+                    // Once the promise resolves, set the value of isPantry
+                    isPantry1 = ispantry;
+                    console.log('isPantry value is set to:', isPantry1);
+
+                    // Check the value of isPantry1 and render the appropriate view
+                    if (isPantry1 === false) {
+                        console.log('ITS FALse');
+                        db.getAllEntries()
+                            .then((list) => {
+                                res.render("entries", {
+                                    title: "Provided Items",
+                                    entries: list,
+                                    user: "user"
+                                });
+                                console.log("promise resolved");
+                            })
+                            .catch((err) => {
+                                console.error("Error:", err);
+                                res.redirect("/login");
+                            });
+                    } else if (isPantry1 === true) {
+                        console.log('ITS true');
+                        db.getAllEntries()
+                            .then((list) => {
+                                res.render("entries", {
+                                    title: "Select Items",
+                                    entries: list,
+                                    user: "user",
+                                    pantry: "pantry"
+                                });
+                                console.log("promise resolved");
+                            })
+                            .catch((err) => {
+                                console.error("Error:", err);
+                                res.redirect("/login");
+                            });
+                    }
+                })
+                .catch((error) => {
+                    // Handle any errors from userispantry
+                    console.error('Error:', error);
+                    res.redirect("/logout");
+                });
+        }
+    });
+};
 
 exports.handle_login = function (req, res) {
     res.render("newEntry", {
@@ -205,13 +275,56 @@ exports.post_new_entry = function (req, res) {
     });
 }
 
+exports.new_message = function (req, res) {
+    res.render('contact', {
+        'title': 'Contact Us'
+    })
+}
+
+exports.post_new_message = function (req, res) {
+    console.log('processing post_new_message controller');
+    if (!req.body.emailaddress) {
+        res.status(400).send("Message must have an email address.");
+        return;
+    }
+
+    console.log('adding message!');
+    dbContact.addMessage(req.body.emailaddress, req.body.subject, req.body.message);
+    console.log('redirecting!');
+    res.redirect("/about");
+
+}
+
+exports.update_user = function (req, res) {
+    console.log('processing post_new_message controller');
+    if (!req.body.UserId) {
+        res.status(400).send("Message must have an email address.");
+        return;
+    }
+
+    const email = req.body.emailaddress; 
+    const fname = req.body.forename; 
+    const sname = req.body.surname; 
+    const password = req.body.pass;
+    const UserId = req.body.UserId;
+    const pantryId = req.body.ispantry;
+
+
+    console.log('adding message!');
+    dbUser.update(UserId,email,fname,sname,password,pantryId)
+    console.log('redirecting!');
+    res.redirect("/adminPanelUser");
+
+}
+
+
 
 exports.post_delete_user = function (req, res) {
     console.log('deleting user', req.params.userid);
     let user = req.params.userid;
     console.log("userid", user);
     userDao.delete(user);
-    res.redirect('/admin');
+    res.redirect('/adminPanelUser');
 
 }
 
@@ -220,6 +333,15 @@ exports.post_delete_posts = function (req, res) {
     let user = req.params.postid;
     console.log("postid", user);
     db.delete(user);
+    res.redirect('/admin');
+
+}
+
+exports.post_delete_message = function (req, res) {
+    console.log('deleting message', req.params._id);
+    let messageid = req.params._id;
+    console.log("postid", messageid);
+    dbContact.delete(messageid);
     res.redirect('/admin');
 
 }
