@@ -216,7 +216,7 @@ exports.loggedIn_landing = function (req, res) {
                 .catch((error) => {
                     // Handle any errors from userispantry
                     console.error('Error:', error);
-                    res.redirect("/logout");
+                    res.redirect("/about");
                 });
         }
     });
@@ -276,9 +276,31 @@ exports.post_new_entry = function (req, res) {
 }
 
 exports.new_message = function (req, res) {
-    res.render('contact', {
-        'title': 'Contact Us'
-    })
+    const myCookieValue = req.cookies['jwt'];
+
+
+    jwt.verify(myCookieValue, process.env.ACCESS_TOKEN_SECRET, function(err, decoded) {
+        if (err) {
+            console.log('Error verifying token:', err);
+            res.render("contact",{
+
+                'title': 'Contact'
+            });
+            return;
+        } else {
+            const username = decoded.username;
+            console.log('Getting Username:', username);
+            console.log('Getting dec:', decoded);
+
+            
+            res.render("contact", {
+                'title': 'Contact',
+                user:"user"
+            });
+        
+        
+        }
+    });
 }
 
 exports.post_new_message = function (req, res) {

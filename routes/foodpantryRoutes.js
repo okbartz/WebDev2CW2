@@ -21,8 +21,8 @@ router.post('/contact', controller.post_new_message);
 
 
 //ENTRIES ROUTES
-router.get('/new', controller.new_entries);
-router.post('/new', controller.post_new_entry);
+router.get('/new',verify, controller.new_entries);
+router.post('/new',verify, controller.post_new_entry);
 
 //ADMIN FUNCTION ROUTES
 router.get('/deleteUser/:userid',verifyAdmin, controller.post_delete_user);
@@ -52,7 +52,7 @@ router.get("/about", controller.show_about_page);
 //     res.redirect('/about.html');
 // })
 
-router.get('/posts/:userid', controller.show_user_entries);
+router.get('/posts/:userid',verify, controller.show_user_entries);
 
 router.use(function (req, res) {
     res.status(404);
