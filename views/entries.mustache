@@ -5,6 +5,7 @@
 <body>
 <body>
 {{>navbar}}
+<div class="container">
 <h1>{{title}}</h1>
 
 <div class="text-right">
@@ -15,31 +16,43 @@ Write in the foodpantry
 
 
 {{#entries}}
-<div>
-<h4>{{foodtitle}}</h4>
-<b>Description:</b>
-<p>
-{{fooddesc}}
-</p>
-<b>Food expires:</b>
-<p>
-{{foodexp}}
-</p>
-<div class="card-footer">
-<p>Written by <a href="/posts/{{userid}}">{{user}}</a>, on {{published}}</p>
+
+<div class="row">
+    <div class="col-md-6">
+        <h4>{{foodtitle}}</h4>
+        <b>Description:</b>
+        <p>
+        {{fooddesc}}
+        </p>
+        <b>Food expires:</b>
+        <p>
+        {{foodexp}}
+        </p>
+        <div class="card-footer">
+        <p>Written by <a href="/posts/{{userid}}">{{user}}</a>, on {{published}}</p>
+        </div>
+
+        <div>
+        {{#pantry}}
+        <a class="btn btn-primary" href="changePantry/{{_id}}">Add to pantry</a >
+        {{/pantry}}
+        </div>
+    </div>
+    <div class="col-md-6">
+    <img style="display: block;
+        margin-left: auto;
+        margin-right: auto;" src="{{foodimg}}"
+        alt="Image of Item" width="75%" >
+    </div>
 </div>
 
-<div>
-{{#pantry}}
-<a class="btn btn-primary" href="addthingymagic">Add to pantry</a >
-{{/pantry}}
-</div>
 
-</div>
+
 <hr>
 {{/entries}}
 {{^entries}}
 No entries yet.
 {{/entries}}
+</div>
 </body>
 </html>

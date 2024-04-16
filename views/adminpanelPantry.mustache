@@ -9,7 +9,7 @@
 <h1>admin Panel</h1>
 <p>Hello this is the admin panel</p>
 
-<h2>Users</h2>
+<h2>Pantry</h2>
 
 {{^entries}}
 <b>No entries yet.</b>
@@ -17,38 +17,37 @@
 
 <table style="width:100%">
   <tr>
-    <th>AdminId</th>
-    <th>FirstName</th>
-    <th>SecondName</th>
-    <th>Email</th>
-    <th>Admin</th>
+    <th>PantryID</th>
+    <th>pantryTitle</th>
+    <th>pantryDescription</th>
+    <th>pantryAddress</th>
     <th>EDIT</th>
     <th>DELETE</th>
     
   </tr>
   {{#entries}}
   <tr>
-    <td>{{_id}}</td>
-    <td>{{fname}}</td>
-    <td>{{sname}}</td>
-    <td>{{email}}</td>
-    <td>{{admin}}</td>
+    <td><a href="/posts/{{_id}}">{{_id}}<a></td>
+    <td>{{pantryTitle}}</td>
+    <td>{{pantryDescription}}</td>
+    <td>{{pantryAddress}}</td>
     <td><a href="#edit_thing">EDIT</a></td>
-    <td><a href="/deleteAdmin/{{_id}}">DELETE</a></td>
+    <td><a href="/deleteUser/{{_id}}">DELETE</a></td>
     
   </tr>
 {{/entries}}
 </table>
 
+
 <hr>
 <section id="edit_thing">
 <div class="container">
-<h1>Edit Admin</h1>
-<form method="post" action="/editAdmin" role="/editAdmin">
+<h1>Edit User</h1>
+<form method="post" action="/editUser" role="/editUser">
     <div class="form-group">
         {{user-name-error}}
         <label for="UserId">UserId to change details for</label>
-        <input type="text" class="form-control" id="UserId" name="UserId" placeholder="Enter UserId" required>
+        <input type="text" class="form-control" id="UserId" name="UserId" placeholder="Enter UserId address" required>
     </div>
     <div class="form-group">
        
@@ -68,7 +67,15 @@
         <label for="pass">Password</label>
         <input type="password" class="form-control" id="pass" name="pass" placeholder="Enter password" required minlength="8" maxlength="100">
     </div>
-   
+    <div class="form-group">
+        <label id="ispantry" for="ispantry">user is pantry:</label>
+    
+    <select id="ispantry" name="ispantry">
+    <option value=false>No</option>
+    <option value=true>Yes</option>
+    </select>
+
+    </div>
     <br>
     <div class="form-group">
         <input type="submit" value="Edit" class="btn btn-primary">
@@ -77,7 +84,7 @@
 </div>
 </section>
 
-
+<a class="btn btn-primary" href="#edit_thing">Add a new member</a >
 
 </body>
 </html>

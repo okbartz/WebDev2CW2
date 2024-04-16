@@ -22,6 +22,7 @@
     <th>SecondName</th>
     <th>Email</th>
     <th>ispantry</th>
+    <th>pantryID</th>
     <th>EDIT</th>
     <th>DELETE</th>
     
@@ -33,6 +34,7 @@
     <td>{{sname}}</td>
     <td>{{email}}</td>
     <td>{{ispantry}}</td>
+    <td>{{pantryid}}</td>
     <td><a href="#edit_thing">EDIT</a></td>
     <td><a href="/deleteUser/{{_id}}">DELETE</a></td>
     
@@ -54,20 +56,20 @@
     <div class="form-group">
        
         <label for="forename">FirstName</label>
-        <input type="text" class="form-control" id="forename" name="forename" placeholder="Enter forename" required>
+        <input type="text" class="form-control" id="forename" name="forename" placeholder="Enter forename" required maxlength="100">
     </div>
     <div class="form-group">
        
         <label for="surname">SecondName</label>
-        <input type="text" class="form-control" id="surname" name="surname" placeholder="Enter surname" required>
+        <input type="text" class="form-control" id="surname" name="surname" placeholder="Enter surname" required maxlength="100">
     </div>
     <div class="form-group">
         <label for="emailaddress">Email</label>
-        <input type="text" class="form-control" id="emailaddress" name="emailaddress" placeholder="Enter email address" required>
+        <input type="email" class="form-control" id="emailaddress" name="emailaddress" placeholder="Enter email address" required maxlength="200">
     </div>
        <div class="form-group">
         <label for="pass">Password</label>
-        <input type="text" class="form-control" id="pass" name="pass" placeholder="Enter password" required>
+        <input type="password" class="form-control" id="pass" name="pass" placeholder="Enter password" required minlength="8" maxlength="100">
     </div>
     <div class="form-group">
         <label id="ispantry" for="ispantry">user is pantry:</label>
@@ -78,6 +80,16 @@
     </select>
 
     </div>
+       <div class="form-group">
+        <label for="pantryID">Pantry ID</label>
+        <input type="text" class="form-control" id="pantryID" name="pantryID" placeholder="Enter Pantry ID">
+        
+    </div>
+
+    
+
+    
+
     <br>
     <div class="form-group">
         <input type="submit" value="Edit" class="btn btn-primary">
@@ -86,7 +98,7 @@
 </div>
 </section>
 
-<a class="btn btn-primary" href="#edit_thing">Add a new member</a >
+
 
 </body>
 </html>

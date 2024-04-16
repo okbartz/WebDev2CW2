@@ -26,10 +26,12 @@ router.post('/new',verify, controller.post_new_entry);
 
 //ADMIN FUNCTION ROUTES
 router.get('/deleteUser/:userid',verifyAdmin, controller.post_delete_user);
+router.get('/deleteAdmin/:userid',verifyAdmin, controller.post_delete_admin);
 router.get('/deletePost/:postid',verifyAdmin, controller.post_delete_posts);
 router.get('/deleteMessage/:_id',verifyAdmin, controller.post_delete_message);
 
 router.post('/editUser',verifyAdmin, controller.update_user);
+router.post('/editAdmin',verifyAdmin, controller.update_admin);
 
 
 router.get('/admin',verifyAdmin, controller.show_admin_page);
@@ -37,7 +39,7 @@ router.get('/adminPanelUser',verifyAdmin, controller.show_admin_users);
 router.get('/adminPanelPosts',verifyAdmin, controller.show_admin_posts);
 router.get('/adminPanelMessages',verifyAdmin, controller.show_messages);
 router.get('/adminPanelAdmin',verifyAdmin, controller.show_admin_admins);
-router.get('/adminPanelPantry',verifyAdmin, controller.show_admin_users);
+router.get('/adminPanelPantry',verifyAdmin, controller.show_admin_pantry);
 
 
 router.get('/register', controller.show_register_page);
@@ -47,6 +49,8 @@ router.get("/logout",verify, controller.logout);
 router.get("/loggedIn",verify, controller.loggedIn_landing);
 
 router.get("/about", controller.show_about_page);
+
+router.get('/changePantry/:itemID',verify, controller.update_itempantry);
 
 // router.get('/about', function (req, res) {
 //     res.redirect('/about.html');

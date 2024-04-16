@@ -64,7 +64,7 @@ class contactDao {
             emailaddress: emailaddress,
             subject: subject1,
             message: message,
-            published: "new Date().toISOString().split('T')[0]"
+            published: new Date().toISOString().split('T')[0]
         };
         console.log('entry created', entry);
         that.db.insert(entry, function (err, doc) {

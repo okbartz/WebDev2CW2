@@ -1,7 +1,7 @@
 const nedb = require('gray-nedb');
 const userDao = require('./userModel.js');
 
-class foodpantry {
+class pantry {
     constructor(dbFilePath) {
         if (dbFilePath) {
             this.db = new nedb({
@@ -16,31 +16,19 @@ class foodpantry {
 
     init() {
         this.db.insert({
-            foodtitle: 'Apple',
-            foodimg: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/1200px-Red_Apple.jpg',
-            foodexp: '2020-02-16',
-            published: '2020-02-16',
-            fooddesc: '12 pack',
-            user: 'Peter',
-            userid: 'AAAA',
-            currentPantryid: null,
-            currentPantryName: null
+            pantryTitle: 'Main Pantry',
+            pantryDescription: 'Something something',
+            pantryAddress: "g52 something",
+            
         });
-        //for later debugging
-        console.log('db entry Peter inserted');
+        console.log('db entry main pantry');
         this.db.insert({
-            foodtitle: 'Chicken',
-            foodimg: 'https://i1.pickpik.com/photos/583/632/1023/chicken-hen-poultry-range-86ac9b1f29db7767b2bf282e3328a171.jpg',
-            foodexp: '2025-02-16',
-            published: '2025-02-16',
-            fooddesc: 'Red',
-            user: 'Ann',
-            userid: 'BBBB',
-            currentPantryid: null,
-            currentPantryName: null
+            pantryTitle: 'Pantry 1',
+            pantryDescription: 'Something something',
+            pantryAddress: "g51 something",
+            
         });
-        //for later debugging
-        console.log('db entry Ann inserted');
+        console.log('db entry pantry 1 pantry');
     }
 
     //a function to return all entries from the database
@@ -58,19 +46,6 @@ class foodpantry {
                     //if no error resolve the promise & return the data
                 } else {
 
-                    entries.forEach(function(entry) {
-                        var foodexp1 = entry.foodexp;
-                        console.log('Checking Entry: ' + foodexp1);
-                        if((checkOOD(foodexp1)) === true){
-                        console.log("is Expired: " + checkOOD(foodexp1))
-                        
-                        db.remove({foodexp: foodexp1});
-                        
-
-                    }
-
-                
-                    });
 
                     resolve(entries);
                     //to see what the returned data looks like
@@ -80,6 +55,26 @@ class foodpantry {
         })
     }
 
+    update(pantryTitle,pantryDescription,pantryAddress,pantryID) {
+        const that = this;
+        
+            var entry = {
+                pantryTitle: pantryTitle, 
+                pantryDescription: pantryDescription, 
+                pantryAddress: pantryAddress,
+            }; 
+            
+            that.db.update({_id: pantryID}, 
+                { $set: entry }, (err, numUsersUpdated, updatedUser) => {
+                if (err) return callback(null, err);
+                
+            })
+
+
+
+            
+        
+    }
 
     addEntry(foodtitle, foodimg, foodexp, fooddesc, user, userid) {
         var entry = {
@@ -101,16 +96,16 @@ class foodpantry {
         })
     }
 
-    getEntriesByUser(userid) {
+    getEntriesById(pantryId) {
         return new Promise((resolve, reject) => {
             this.db.find({
-                'userid': userid
+                '_id': pantryId
             }, function (err, entries) {
                 if (err) {
                     reject(err);
                 } else {
                     resolve(entries);
-                    console.log('getEntriesByUser returns: ', entries);
+                    console.log('getEntriesById returns: ', entries);
                 }
             })
         })
@@ -127,25 +122,6 @@ class foodpantry {
                 }
             })
         })
-    }
-
-    updatePantry(itemsid,currentPantryid,currentPantryName) {
-        const that = this;
-        
-            let itemid = itemsid;
-            
-            var entry = {
-                currentPantryid: currentPantryid, 
-                currentPantryName: currentPantryName, 
-            }; 
-            
-            console.log("updating items pantry")
-            that.db.update({_id: itemid}, 
-                { $set: entry }, (err, numUsersUpdated, updatedUser) => {
-                if (err) return callback(null, err);
-                
-            });
-
     }
 
     delete(itemid) {
@@ -167,24 +143,11 @@ class foodpantry {
 
 
 
-function checkOOD(date){
-    var CurrentDate = new Date();
-    var ExpiryDate = new Date(date);
-    
-    console.log("current date: "+ CurrentDate);
-    console.log("expiry date:" + ExpiryDate);
-    console.log(CurrentDate + " > " + ExpiryDate);
-
- if(CurrentDate > ExpiryDate){
-     return true;
- }
- else{
-     return false;
- }
 
 
 
- }
 
-module.exports = foodpantry;
+ 
+
+module.exports = pantry;
 

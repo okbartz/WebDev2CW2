@@ -20,7 +20,8 @@ class UserDAO {
             fname: 'bob', 
             sname: 'doe', 
             password: "$2b$10$NwOTFkWPsGKKy3eP8WJZUuidqW46ZAD26xzWaPdzdbFHCy3Yk1Cxi",
-            ispantry: false
+            ispantry: false,
+            pantryid: null
         });
         
         this.db.insert({
@@ -29,7 +30,8 @@ class UserDAO {
             sname: 'doe', 
             password:
                 '$2b$10$NwOTFkWPsGKKy3eP8WJZUuidqW46ZAD26xzWaPdzdbFHCy3Yk1Cxi',
-                ispantry: true
+                ispantry: true,
+                pantryid: null
         }); return
         this;
     }
@@ -56,7 +58,7 @@ class UserDAO {
     }
 
     update(userid,email,fname,sname,
-        password, ispantry) {
+        password, ispantry, pantryid) {
         const that = this;
         bcrypt.hash(password, saltRounds).then(function (hash) {
             var entry = {
@@ -65,7 +67,8 @@ class UserDAO {
                 fname: fname, 
                 sname: sname,
                 password: hash,
-                ispantry: ispantry
+                ispantry: ispantry,
+                pantryid: pantryid
             }; 
             
             that.db.update({_id: userid}, 
