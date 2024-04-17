@@ -8,11 +8,22 @@
 <div class="container">
 <h1>{{title}}</h1>
 
+{{#user}}
 <div class="text-right">
 <a href="/new" class="btn btn-primary">
 Write in the foodpantry
 </a>
 </div>
+{{/user}}
+
+{{#pantry}}
+<br>
+<div class="text-right">
+<a href="/viewOwnPantry" class="btn btn-primary">
+View own pantry
+</a>
+</div>
+{{/pantry}}
 
 
 {{#entries}}
@@ -30,8 +41,12 @@ Write in the foodpantry
         </p>
         <div class="card-footer">
         <p>Written by <a href="/posts/{{userid}}">{{user}}</a>, on {{published}}</p>
+
+        <p>Selected Pantry <a href="/pantries/{{currentPantryid}}">{{currentPantryName}}</a></p>
         </div>
 
+        
+        
         <div>
         {{#pantry}}
         <a class="btn btn-primary" href="changePantry/{{_id}}">Add to pantry</a >

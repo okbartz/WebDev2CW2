@@ -23,8 +23,8 @@ class foodpantry {
             fooddesc: '12 pack',
             user: 'Peter',
             userid: 'AAAA',
-            currentPantryid: null,
-            currentPantryName: null
+            currentPantryid: "1234",
+            currentPantryName: "Main Pantry"
         });
         //for later debugging
         console.log('db entry Peter inserted');
@@ -36,8 +36,8 @@ class foodpantry {
             fooddesc: 'Red',
             user: 'Ann',
             userid: 'BBBB',
-            currentPantryid: null,
-            currentPantryName: null
+            currentPantryid: "5678",
+            currentPantryName: "Pantry 1"
         });
         //for later debugging
         console.log('db entry Ann inserted');
@@ -81,7 +81,7 @@ class foodpantry {
     }
 
 
-    addEntry(foodtitle, foodimg, foodexp, fooddesc, user, userid) {
+    addEntry(foodtitle, foodimg, foodexp, fooddesc, user, userid , pantryId, PantryName) {
         var entry = {
             foodtitle: foodtitle,
             foodimg: foodimg,
@@ -89,7 +89,9 @@ class foodpantry {
             published: new Date().toISOString().split('T')[0],
             fooddesc: fooddesc,
             user: user,
-            userid: userid
+            userid: userid,
+            currentPantryid: pantryId,
+            currentPantryName: PantryName
         }
         console.log('entry created', entry);
         this.db.insert(entry, function (err, doc) {
@@ -111,6 +113,21 @@ class foodpantry {
                 } else {
                     resolve(entries);
                     console.log('getEntriesByUser returns: ', entries);
+                }
+            })
+        })
+    }
+
+    getEntriesByPantryId(pantryId) {
+        return new Promise((resolve, reject) => {
+            this.db.find({
+                'currentPantryid': pantryId
+            }, function (err, entries) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(entries);
+                    console.log('getEntriesByPantryId returns: ', entries);
                 }
             })
         })

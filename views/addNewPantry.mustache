@@ -1,0 +1,32 @@
+<html>
+<head>
+    {{>header}}
+</head>
+<body>
+{{>navbar}}
+<div class="container">
+<h1>{{title}}</h1>
+<h2>New User Registration Page</h2>
+<form method="post" role="/addNewPantry">
+    <div class="form-group">
+        {{user-name-error}}
+        <label for="pantryTitle">Pantry Title</label>
+        <input type="text" class="form-control" id="pantryTitle" name="pantryTitle" placeholder="Enter pantry Title" required maxlength="200"> 
+    </div>
+    <div class="form-group">
+       
+        <label for="pantryDescription">Pantry Description</label>
+        <input type="text" class="form-control" id="pantryDescription" name="pantryDescription" placeholder="Enter Pantry Description" required maxlength="100">
+    </div>
+    <div class="form-group">
+       
+        <label for="pantryAddress">PantryAddress </label>
+        <input type="text" class="form-control" id="pantryAddress" name="pantryAddress" placeholder="Enter Pantry Address" required maxlength="100">
+    </div>
+    <br>
+    <div class="form-group">
+        <input type="submit" value="Register" class="btn btn-primary">
+    </div>
+</form>
+</div>
+</body>

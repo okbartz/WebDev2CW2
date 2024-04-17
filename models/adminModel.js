@@ -40,6 +40,7 @@ class AdminDAO {
         const that = this;
         bcrypt.hash(password, saltRounds).then(function (hash) {
             var entry = {
+                admin: 'true',
                 email: email, 
                 fname: fname, 
                 sname: sname,

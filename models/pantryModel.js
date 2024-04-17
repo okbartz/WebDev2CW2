@@ -76,15 +76,11 @@ class pantry {
         
     }
 
-    addEntry(foodtitle, foodimg, foodexp, fooddesc, user, userid) {
+    addEntry(pantryTitle, pantryDescription, pantryAddress) {
         var entry = {
-            foodtitle: foodtitle,
-            foodimg: foodimg,
-            foodexp: foodexp,
-            published: new Date().toISOString().split('T')[0],
-            fooddesc: fooddesc,
-            user: user,
-            userid: userid
+            pantryTitle: pantryTitle, 
+                pantryDescription: pantryDescription, 
+                pantryAddress: pantryAddress,
         }
         console.log('entry created', entry);
         this.db.insert(entry, function (err, doc) {

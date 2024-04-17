@@ -1,5 +1,6 @@
 const Datastore = require("gray-nedb");
-const bcrypt = require('bcrypt'); const
+const bcrypt = require('bcrypt');const pantry = require("./pantryModel");
+ const
     saltRounds = 10;
 class UserDAO {
     constructor(dbFilePath) {
@@ -31,7 +32,7 @@ class UserDAO {
             password:
                 '$2b$10$NwOTFkWPsGKKy3eP8WJZUuidqW46ZAD26xzWaPdzdbFHCy3Yk1Cxi',
                 ispantry: true,
-                pantryid: null
+                pantryid: "5678"
         }); return
         this;
     }
@@ -110,6 +111,25 @@ class UserDAO {
                         null);
                 } return cb(null, entries[0]);
             }
+        });
+    }
+
+    LookUpPantryID(userID) {
+        return new Promise((resolve, reject) => {
+            this.db.find({"_id": userID}, function (err, entries) {
+                if (err) {
+                    reject(err); // If there's an error, reject the promise
+                } else {
+                    if (entries.length > 0) {
+                        // Assuming `_id` is unique and there's only one entry
+                        const pantryid = entries[0].pantryid;
+                        console.log('function all() returns: ', pantryid);
+                        resolve(pantryid); // Resolve the promise with the value of ispantry
+                    } else {
+                        reject(new Error("User not found")); // Reject if user is not found
+                    }
+                }
+            });
         });
     }
 

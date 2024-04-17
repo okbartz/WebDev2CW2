@@ -1,0 +1,40 @@
+<html>
+<head>
+    {{>header}}
+</head>
+<body>
+{{>navbar}}
+<div class="container">
+<h1>{{title}}</h1>
+<h2>New User Registration Page</h2>
+<form method="post" role="/addNewAdmin">
+    <div class="form-group">
+        {{user-name-error}}
+        <label for="emailaddress">Email address</label>
+        <input type="email" class="form-control" id="emailaddress" name="emailaddress" placeholder="Enter email address" required maxlength="200"> 
+    </div>
+    <div class="form-group">
+       
+        <label for="forename">Forename</label>
+        <input type="text" class="form-control" id="forename" name="forename" placeholder="Enter forename" required maxlength="100">
+    </div>
+    <div class="form-group">
+       
+        <label for="surname">Surname </label>
+        <input type="text" class="form-control" id="surname" name="surname" placeholder="Enter surname" required maxlength="100">
+    </div>
+    <div class="form-group">
+        <label for="password">Password (8 characters minimum)</label>
+        <input type="password" class="form-control" id="pass" name="pass" placeholder="Enter password" minlength="8" maxlength="100" required>
+    </div>
+    <div class="form-group">
+        <label for="confpassword">Confirm Password</label>
+        <input type="password" class="form-control" id="confpassword" name="confpassword" placeholder="Enter password" minlength="8" maxlength="100" required>
+    </div>
+    <br>
+    <div class="form-group">
+        <input type="submit" value="Register" class="btn btn-primary">
+    </div>
+</form>
+</div>
+</body>

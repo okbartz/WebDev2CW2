@@ -79,11 +79,18 @@
     <option value=true>Yes</option>
     </select>
 
-    </div>
-       <div class="form-group">
-        <label for="pantryID">Pantry ID</label>
-        <input type="text" class="form-control" id="pantryID" name="pantryID" placeholder="Enter Pantry ID">
-        
+   <div class="form-group">
+        <label id="pantryIDtext" for="pantryID">Selected Pantry Location</label>
+ 
+    <select id="pantryID" name="pantryID">
+    
+    {{#selectedPantries}}
+
+    <option value={{_id}}>{{pantryTitle}}</option>
+
+    {{/selectedPantries}}
+    </select>
+
     </div>
 
     

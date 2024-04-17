@@ -60,11 +60,19 @@ exports.show_admin_page = function (req, res) {
 exports.show_admin_users = function (req, res) {
     dbUser.getAllEntries()
         .then((list) => {
+            
+            dbPantries.getAllEntries()
+            .then((list2) => {
             res.render("adminpanelUser", {
                 admin: "admin",
                 user:"user",
-                entries: list
+                entries: list,
+                selectedPantries: list2
             });
+        }).catch((err) => {
+            // console.log("promise rejected", err);
+            res.redirect("/login")
+        });
             console.log("promise resolved");
         })
         .catch((err) => {
@@ -220,7 +228,7 @@ exports.loggedIn_landing = function (req, res) {
                     // Check the value of isPantry1 and render the appropriate view
                     if (isPantry1 === true) {
                         console.log('ITS true');
-                        db.getAllEntries()
+                        db.getEntriesByPantryId("1234")
                             .then((list) => {
                                 res.render("entries", {
                                     title: "Select Items",
@@ -236,7 +244,7 @@ exports.loggedIn_landing = function (req, res) {
                             });
                     } else  {
                         console.log('ITS FALse');
-                        db.getAllEntries()
+                        db.getEntriesByPantryId("1234")
                             .then((list) => {
                                 res.render("entries", {
                                     title: "Provided Items",
@@ -254,7 +262,8 @@ exports.loggedIn_landing = function (req, res) {
                 .catch((error) => {
                     // Handle any errors from userispantry
                     console.error('Error:', error);
-                    res.redirect("/about");
+                    return res.status(401).send("401 Unauthorized access, attempt re-login to fix");
+                    // res.redirect("/about");
                 });
         }
     });
@@ -270,9 +279,24 @@ exports.logout = function (req, res) {
 
 
 exports.new_entries = function (req, res) {
-    res.render('newEntry', {
-        'title': 'Food'
-    })
+
+
+    dbPantries.getAllEntries().then(
+        (entries) => {
+            res.render('newEntry', {
+                'title': 'Food',
+                'user': 'user',
+                'selectedPantries': entries
+                
+            });
+
+            console.log(entries);
+
+        }).catch((err) => {
+            console.log('error handling author posts', err);
+        });
+
+
 }
 
 exports.new_entry = function (req, res) {
@@ -303,9 +327,30 @@ exports.post_new_entry = function (req, res) {
             console.log('Getting Username:', username);
             console.log('Getting dec:', userid);
 
-            // Perform database operation after getting email
-            db.addEntry(req.body.foodtitle, req.body.foodimg, req.body.foodexp, req.body.fooddesc, username,userid);
-            res.redirect("/loggedIn");
+            var pantryTitle = "";
+            
+            console.log("grabbing specific pantry ")
+            
+                
+                dbPantries.getEntriesById(req.body.pantryID)
+                .then((list) => {
+                
+
+                    list.forEach(function(entry) {
+                        pantryTitle = entry.pantryTitle;
+                        console.log('Checking Entry: ' + pantryTitle);
+                       
+
+                    });
+
+                    db.addEntry(req.body.foodtitle, req.body.foodimg, req.body.foodexp, req.body.fooddesc, username,userid, req.body.pantryID, pantryTitle);
+                    res.redirect("/loggedIn");
+            })
+            .catch((err) => {
+                console.log('promise rejected', err);
+            })
+
+
         }
     });
 }
@@ -367,6 +412,73 @@ exports.post_new_message = function (req, res) {
 
 }
 
+exports.show_addAdmin = function (req, res) {
+    res.render("addNewAdmin");
+}
+
+exports.post_addAdmin = function (req, res) {
+    const email = req.body.emailaddress; 
+    const fname = req.body.forename; 
+    const sname = req.body.surname; 
+    const password = req.body.pass;
+    const confpassword = req.body.confpassword;
+
+    if (!email || !password) {
+        return res.status(401).send('No email or no password');
+    }
+
+    if (password !== confpassword) {
+        return res.status(401).send('Passwords do not match');
+    }
+
+    dbUser.lookup(email, function (err, user) {
+        if (err) {
+            console.error("Error looking up user:", err);
+            return res.status(500).send('Internal Server Error');
+        }
+
+        if (user) {
+            return res.status(401).send("User already exists: " + email);
+        }
+
+        dbAdmin.lookup(email, function (err, admin) {
+            if (err) {
+                console.error("Error looking up admin:", err);
+                return res.status(500).send('Internal Server Error');
+            }
+
+            if (admin) {
+                return res.status(401).send("Admin already exists: " + email);
+            }
+
+            // If user and admin don't exist, create the new user
+            adminDao.create(email, fname, sname, password, confpassword);
+            res.redirect('/adminPanelAdmin');
+
+
+        });
+    });
+};
+
+exports.show_addPantry = function (req, res) {
+    res.render("addNewPantry");
+}
+
+exports.post_addPantry = function (req, res) {
+    const pantryTitle = req.body.pantryTitle; 
+    const pantryDescription = req.body.pantryDescription; 
+    const pantryAddress = req.body.pantryAddress; 
+
+    if (!pantryTitle || !pantryDescription) {
+        return res.status(401).send('No email or no password');
+    }
+
+    dbPantries.addEntry(pantryTitle,pantryDescription,pantryAddress)
+
+    res.redirect('/adminPanelPantry');
+
+};
+
 exports.update_user = function (req, res) {
     console.log('processing post_new_message controller');
     if (!req.body.UserId) {
@@ -391,6 +503,27 @@ exports.update_user = function (req, res) {
 
 }
 
+exports.update_pantry = function (req, res) {
+    console.log('processing post_new_message controller');
+    if (!req.body.PantryID) {
+        res.status(400).send("Message must have an email address.");
+        return;
+    }
+
+    const PantryID = req.body.PantryID; 
+    const pantryTitle = req.body.pantryTitle; 
+    const pantryDescription = req.body.pantryDescription; 
+    const pantryAddress = req.body.pantryAddress; 
+    
+    
+
+
+    console.log('adding message!');
+    dbPantries.update(pantryTitle, pantryDescription, pantryAddress ,PantryID)
+    console.log('redirecting!');
+    res.redirect("/adminPanelPantry");
+
+}
 
 exports.update_admin = function (req, res) {
     console.log('processing post_new_message controller');
@@ -449,6 +582,16 @@ exports.post_delete_message = function (req, res) {
     res.redirect('/admin');
 
 }
+
+exports.post_delete_pantry = function (req, res) {
+    console.log('deleting pantry', req.params._id);
+    let pantryid = req.params._id;
+    console.log("pantryid", pantryid);
+    dbPantries.delete(pantryid);
+    res.redirect('/admin');
+
+}
+
 
 exports.show_login_page = function (req, res) {
     res.render("user/login");
@@ -544,15 +687,84 @@ exports.update_itempantry = function (req, res) {
             }
 
             const itemID = itemid;
-            const pantryID = decoded.userid;
-            const currentPantryName = decoded.username; 
+            
+            dbUser.LookUpPantryID(decoded.userid).then((pantid) => {
+                
+                var pantryTitle ="";
+
+                dbPantries.getEntriesById(req.body.pantryID)
+                .then((list) => {
+                
+
+                    list.forEach(function(entry) {
+                        pantryTitle = entry.pantryTitle;
+                        console.log('Checking Entry: ' + pantryTitle);
+                       
+
+                    });
+
+                    console.log('changing pantry!');
+                    db.updatePantry(itemID,pantid,pantryTitle)
+                    console.log('redirecting!');
+                    res.redirect("/loggedin");
+                    
+            })
+            .catch((err) => {
+                console.log('promise rejected', err);
+            })
 
 
-            console.log('changing pantry!');
-            db.updatePantry(itemID,pantryID,currentPantryName)
-            console.log('redirecting!');
-            res.redirect("/loggedin");
 
+                
+            
+            
+        })
+
+
+        }
+    });
+}
+
+exports.view_own_pantry = function (req, res) {
+
+    
+
+    const myCookieValue = req.cookies['jwt'];
+
+    jwt.verify(myCookieValue, process.env.ACCESS_TOKEN_SECRET, function(err, decoded) {
+        if (err) {
+            console.error('Error verifying token:', err);
+            res.status(500).send("Error verifying token");
+            return;
+        } else {
+
+            if(!decoded.userid){
+                res.status(500).send("Error not a user");
+            return;
+            }
+
+            
+            const UserID = decoded.userid;
+            
+
+            dbUser.LookUpPantryID(UserID).then((pantid) => {
+                console.log("pantry id", pantid);
+                db.getEntriesByPantryId(pantid)
+                    .then((entries) => {
+                        res.render('entries', {
+                            'title': 'Pantry items',
+                            'user': 'user',
+                            'entries': entries
+                        });
+                    })
+                    .catch((err) => {
+                        console.log('error handling author posts', err);
+                        res.status(500).send("Error: unable to retrieve entries by pantry ID");
+                    });
+            }).catch((err) => {
+                console.log('error handling pantry ID lookup', err);
+                res.status(500).send("Error: unable to look up pantry ID");
+            });
         }
     });
 }
