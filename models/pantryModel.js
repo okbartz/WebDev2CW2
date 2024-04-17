@@ -19,14 +19,14 @@ class pantry {
             pantryTitle: 'Main Pantry',
             pantryDescription: 'Something something',
             pantryAddress: "g52 something",
-            
+            _id: "1234"
         });
         console.log('db entry main pantry');
         this.db.insert({
             pantryTitle: 'Pantry 1',
             pantryDescription: 'Something something',
             pantryAddress: "g51 something",
-            
+            _id: "5678"
         });
         console.log('db entry pantry 1 pantry');
     }
