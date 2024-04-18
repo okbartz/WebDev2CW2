@@ -14,6 +14,7 @@ class foodpantry {
         }
     }
 
+    //function for initializing database for food items
     init() {
         this.db.insert({
             foodtitle: 'Apple',
@@ -21,6 +22,18 @@ class foodpantry {
             foodexp: '2020-02-16',
             published: '2020-02-16',
             fooddesc: '12 pack',
+            user: 'Peter',
+            userid: 'AAAA',
+            currentPantryid: "1234",
+            currentPantryName: "Main Pantry"
+        });
+
+        this.db.insert({
+            foodtitle: 'Apple Pack',
+            foodimg: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/1200px-Red_Apple.jpg',
+            foodexp: '2025-02-16',
+            published: '2025-02-16',
+            fooddesc: '4 pack',
             user: 'Peter',
             userid: 'AAAA',
             currentPantryid: "1234",
@@ -80,7 +93,7 @@ class foodpantry {
         })
     }
 
-
+//function for adding new entries to database
     addEntry(foodtitle, foodimg, foodexp, fooddesc, user, userid , pantryId, PantryName) {
         var entry = {
             foodtitle: foodtitle,
@@ -103,6 +116,7 @@ class foodpantry {
         })
     }
 
+    //function for retrieving entries by user id
     getEntriesByUser(userid) {
         return new Promise((resolve, reject) => {
             this.db.find({
@@ -118,6 +132,7 @@ class foodpantry {
         })
     }
 
+    //function for retrieving entries by pantry id
     getEntriesByPantryId(pantryId) {
         return new Promise((resolve, reject) => {
             this.db.find({
@@ -144,6 +159,7 @@ class foodpantry {
         })
     }
 
+    // function for getting all the users posts
     getAllUsers() {
         return new Promise((resolve, reject) => {
             this.db.find({}, function (err, entries) {
@@ -157,6 +173,7 @@ class foodpantry {
         })
     }
 
+    //functions for changing item to a specific pantry
     updatePantry(itemsid,currentPantryid,currentPantryName) {
         const that = this;
         
@@ -176,6 +193,7 @@ class foodpantry {
 
     }
 
+    //function for deleting specific items
     delete(itemid) {
         this.db.remove({
             '_id':
@@ -194,7 +212,7 @@ class foodpantry {
 }
 
 
-
+//function for checking if a item is out of date
 function checkOOD(date){
     var CurrentDate = new Date();
     var ExpiryDate = new Date(date);

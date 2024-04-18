@@ -16,6 +16,7 @@ class AdminDAO {
         }
     }
    
+    //initalize administrators
     init() {
         this.db.insert({
             admin: 'true',
@@ -35,6 +36,7 @@ class AdminDAO {
         this;
     }
 
+    //create function for creating new admins
     create(email,fname,sname,
         password,confpassword) {
         const that = this;
@@ -55,6 +57,8 @@ class AdminDAO {
             });
         }});
     }
+
+    //lookup function for checking if admin exists
     lookup(email, cb) {
         this.db.find({
             'email':
@@ -96,6 +100,7 @@ class AdminDAO {
         })
     }
 
+    //function for deleting an admin with id
     delete(userid) {
         this.db.remove({
             '_id':
@@ -109,6 +114,7 @@ class AdminDAO {
         });
     }
 
+    //function for updating admin details
     update(userid,email,fname,sname,
         password) {
         const that = this;

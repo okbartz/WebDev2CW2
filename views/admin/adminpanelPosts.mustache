@@ -9,7 +9,7 @@
 <h1>admin Panel</h1>
 <p>Hello this is the admin panel</p>
 
-<h2>Users</h2>
+<h2>Posts</h2>
 
 {{^entries}}
 <b>No entries yet.</b>
@@ -29,12 +29,12 @@
   </tr>
   {{#entries}}
   <tr>
-    <td><a href="/posts/{{userid}}">{{userid}}<a></td>
     <td>{{foodtitle}}</td>
     <td>{{foodexp}}</td>
     <td>{{published}}</td>
     <td>{{fooddesc}}</td>
     <td>{{user}}</td>
+    <td><a href="/posts/{{userid}}">{{userid}}<a></td>
 
     <td><a class="btn btn-danger" href="/deletePost/{{_id}}">DELETE</a></td>
     

@@ -14,6 +14,7 @@ class pantry {
         }
     }
 
+    //function for initializing pantry database
     init() {
         this.db.insert({
             pantryTitle: 'Main Pantry',
@@ -55,6 +56,7 @@ class pantry {
         })
     }
 
+    //function for updating pantry details
     update(pantryTitle,pantryDescription,pantryAddress,pantryID) {
         const that = this;
         
@@ -76,6 +78,7 @@ class pantry {
         
     }
 
+    //function for adding a new pantry entry
     addEntry(pantryTitle, pantryDescription, pantryAddress) {
         var entry = {
             pantryTitle: pantryTitle, 
@@ -92,6 +95,8 @@ class pantry {
         })
     }
 
+
+    //function for getting pantry by id
     getEntriesById(pantryId) {
         return new Promise((resolve, reject) => {
             this.db.find({
@@ -107,26 +112,15 @@ class pantry {
         })
     }
 
-    getAllUsers() {
-        return new Promise((resolve, reject) => {
-            this.db.find({}, function (err, entries) {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(entries.user);
-                    console.log('getEntriesByUser returns: ', entries);
-                }
-            })
-        })
-    }
 
-    delete(itemid) {
+    //function for deleting specific pantrys
+    delete(pantryID) {
         this.db.remove({
             '_id':
-            itemid
+            pantryID
         }, function (err, entries) {
             if (err) {
-                console.log("Can't find user:", itemid);
+                console.log("Can't find pantry:", pantryID);
                 return
                 cb(null, null);
             }

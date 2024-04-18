@@ -13,7 +13,8 @@ class UserDAO {
             this.db = new Datastore();
         }
     }
-    // for the demo the password is the bcrypt of the username
+    // initialize user database
+    // temp password is password
     init() {
 
         this.db.insert({
@@ -37,6 +38,7 @@ class UserDAO {
         this;
     }
 
+    //function for creating new users
     create(email,fname,sname,
         password,confpassword) {
         const that = this;
@@ -58,6 +60,7 @@ class UserDAO {
         }});
     }
 
+    //function for updating existing users
     update(userid,email,fname,sname,
         password, ispantry, pantryid) {
         const that = this;
@@ -83,6 +86,7 @@ class UserDAO {
         });
     }
     
+    //function for deleting users
     delete(userid) {
         this.db.remove({
             '_id':
@@ -95,6 +99,8 @@ class UserDAO {
             }
         });
     }
+
+    //function for looking up users if they exist
     lookup(email, cb) {
         this.db.find({
             'email':
@@ -113,17 +119,18 @@ class UserDAO {
         });
     }
 
+    //function for looking up the pantry id of a user
     LookUpPantryID(userID) {
         return new Promise((resolve, reject) => {
             this.db.find({"_id": userID}, function (err, entries) {
                 if (err) {
-                    reject(err); // If there's an error, reject the promise
+                    reject(err); 
                 } else {
                     if (entries.length > 0) {
-                        // Assuming `_id` is unique and there's only one entry
+                        
                         const pantryid = entries[0].pantryid;
                         console.log('function all() returns: ', pantryid);
-                        resolve(pantryid); // Resolve the promise with the value of ispantry
+                        resolve(pantryid); 
                     } else {
                         reject(new Error("User not found")); // Reject if user is not found
                     }
@@ -132,6 +139,7 @@ class UserDAO {
         });
     }
 
+    //get all users
     getAllEntries() {
         //return a Promise object, which can be resolved or rejected
         return new Promise((resolve, reject) => {
@@ -154,6 +162,7 @@ class UserDAO {
         })
     }
 
+    //function for checking is a user is a pantry
      userispantry(userID) {
         return new Promise((resolve, reject) => {
             this.db.find({"_id": userID}, function (err, entries) {

@@ -14,6 +14,7 @@ class contactDao {
         }
     }
 
+    //function for initializing database
     init() {
         this.db.insert({
             emailaddress: 'ex@email.co',
@@ -57,7 +58,7 @@ class contactDao {
         })
     }
 
-
+// function for adding a new message to database
     addMessage(emailaddress, subject1, message) {
         const that = this;
         var entry = {
@@ -75,23 +76,23 @@ class contactDao {
             }
         });
     }
+//function for getting entries by user id
+    // getEntriesByUser(userid) {
+    //     return new Promise((resolve, reject) => {
+    //         this.db.find({
+    //             'userid': userid
+    //         }, function (err, entries) {
+    //             if (err) {
+    //                 reject(err);
+    //             } else {
+    //                 resolve(entries);
+    //                 console.log('getEntriesByUser returns: ', entries);
+    //             }
+    //         })
+    //     })
+    // }
 
-    getEntriesByUser(userid) {
-        return new Promise((resolve, reject) => {
-            this.db.find({
-                'userid': userid
-            }, function (err, entries) {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(entries);
-                    console.log('getEntriesByUser returns: ', entries);
-                }
-            })
-        })
-    }
-
-
+//function for deleting entries with message id
     delete(messageid) {
         this.db.remove({
             '_id':

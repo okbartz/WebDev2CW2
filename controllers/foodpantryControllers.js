@@ -820,13 +820,14 @@ exports.update_itempantry = function (req, res) {
 
                 var pantryTitle = "";
 
-                dbPantries.getEntriesById(req.body.pantryID)
-                    .then((list) => {
+                dbPantries.getEntriesById(pantid)
+                    .then((entries) => {
 
+                        console.log("ENTRIES PANTRIES:", entries)
 
-                        list.forEach(function (entry) {
+                        entries.forEach(function (entry) {
                             pantryTitle = entry.pantryTitle;
-                            console.log('Checking Entry: ' + pantryTitle);
+                            console.log('Checking Pantry Entry: ' + pantryTitle);
 
 
                         });
@@ -835,7 +836,7 @@ exports.update_itempantry = function (req, res) {
                         db.updatePantry(itemID, pantid, pantryTitle)
                         console.log('redirecting!');
                         res.redirect("/loggedin");
-
+                        
                     })
                     .catch((err) => {
                         console.log('promise rejected', err);
