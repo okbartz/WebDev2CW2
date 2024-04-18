@@ -21,7 +21,7 @@ class UserDAO {
             fname: 'bob', 
             sname: 'doe', 
             password: "$2b$10$NwOTFkWPsGKKy3eP8WJZUuidqW46ZAD26xzWaPdzdbFHCy3Yk1Cxi",
-            ispantry: false,
+            ispantry: "false",
             pantryid: null
         });
         
@@ -31,7 +31,7 @@ class UserDAO {
             sname: 'doe', 
             password:
                 '$2b$10$NwOTFkWPsGKKy3eP8WJZUuidqW46ZAD26xzWaPdzdbFHCy3Yk1Cxi',
-                ispantry: true,
+                ispantry: "true",
                 pantryid: "5678"
         }); return
         this;
@@ -63,7 +63,6 @@ class UserDAO {
         const that = this;
         bcrypt.hash(password, saltRounds).then(function (hash) {
             var entry = {
-                userid: userid,
                 email: email, 
                 fname: fname, 
                 sname: sname,

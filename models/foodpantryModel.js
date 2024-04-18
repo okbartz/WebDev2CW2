@@ -58,19 +58,19 @@ class foodpantry {
                     //if no error resolve the promise & return the data
                 } else {
 
-                    entries.forEach(function(entry) {
-                        var foodexp1 = entry.foodexp;
-                        console.log('Checking Entry: ' + foodexp1);
-                        if((checkOOD(foodexp1)) === true){
-                        console.log("is Expired: " + checkOOD(foodexp1))
+                    // entries.forEach(function(entry) {
+                    //     var foodexp1 = entry.foodexp;
+                    //     console.log('Checking Entry: ' + foodexp1);
+                    //     if((checkOOD(foodexp1)) === true){
+                    //     console.log("is Expired: " + checkOOD(foodexp1))
                         
-                        db.remove({foodexp: foodexp1});
+                    //     db.remove({foodexp: foodexp1});
                         
 
-                    }
+                    // }
 
                 
-                    });
+                    // });
 
                     resolve(entries);
                     //to see what the returned data looks like
@@ -123,6 +123,17 @@ class foodpantry {
             this.db.find({
                 'currentPantryid': pantryId
             }, function (err, entries) {
+
+                //if entry is expired it wont display it
+                entries = entries.filter(function(entry) {
+                    var foodexp1 = entry.foodexp;
+                    console.log('Checking Entry: ' + foodexp1);
+                    var isExpired = checkOOD(foodexp1);
+                    console.log("is Expired: " + isExpired);
+                    return !isExpired; 
+                });
+
+
                 if (err) {
                     reject(err);
                 } else {

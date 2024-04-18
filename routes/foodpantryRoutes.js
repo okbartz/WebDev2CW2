@@ -14,7 +14,7 @@ router.get("/", controller.show_about_page);
 router.get("/about", controller.show_about_page);
 
 //PANTRY ROUTES
-router.get('/foodpantry', controller.entries_list);
+// router.get('/foodpantry', controller.entries_list);
 router.get('/viewOwnPantry', controller.view_own_pantry);
 router.get('/changePantry/:itemID',verify, controller.update_itempantry);
 

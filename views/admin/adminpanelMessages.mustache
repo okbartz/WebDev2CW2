@@ -32,12 +32,14 @@
     <td>{{message}}</td>
     <td>{{published}}</td>
     <td>{{_id}}</td>
-    <td><a href="/deleteMessage/{{_id}}">DELETE</a></td>
+    <td><a class="btn btn-danger" href="/deleteMessage/{{_id}}">DELETE</a></td>
     
   </tr>
 {{/entries}}
 </table>
 
+
+{{>footer}}
 
 </body>
 </html>

@@ -23,30 +23,30 @@ dbContact.init();
 // }
 
 
-exports.entries_list = function (req, res) {
-    res.send('<h1>foodpantry Messages</h1><p>Not yet implemented: will show a list of food pantry entries.</p> ');
-}
+// exports.entries_list = function (req, res) {
+//     res.send('<h1>foodpantry Messages</h1><p>Not yet implemented: will show a list of food pantry entries.</p> ');
+// }
 
 
 
-exports.landing_page = function (req, res) {
-    db.getAllEntries()
-        .then((list) => {
-            res.render('entries', {
-                'title': 'food pantry',
-                'entries': list
-            });
-            console.log('promise resolved');
-        })
-        .catch((err) => {
-            console.log('promise rejected', err);
-        })
-}
+// exports.landing_page = function (req, res) {
+//     db.getAllEntries()
+//         .then((list) => {
+//             res.render('entries', {
+//                 'title': 'food pantry',
+//                 'entries': list
+//             });
+//             console.log('promise resolved');
+//         })
+//         .catch((err) => {
+//             console.log('promise rejected', err);
+//         })
+// }
 
-//Function for displaying the register page
-exports.show_register_page = function (req, res) {
-    res.render("user/register");
-}
+
+
+
+//ADMIN FUNCTIONS
 
 //function for showing the admin page
 exports.show_admin_page = function (req, res) {
@@ -222,7 +222,7 @@ exports.loggedIn_landing = function (req, res) {
                     console.log('isPantry value is set to:', isPantry1);
 
                     //Checking if the user is part of a pantry or not
-                    if (isPantry1 === true) {
+                    if (isPantry1 === "true") {
                         console.log('user is part of a pantry');
                         db.getEntriesByPantryId("1234")
                             .then((list) => {
@@ -273,6 +273,11 @@ exports.handle_login = function (req, res) {
 //function for handling logining out
 exports.logout = function (req, res) {
     res.clearCookie("jwt").status(200).redirect("/");
+}
+
+//Function for displaying the register page
+exports.show_register_page = function (req, res) {
+    res.render("user/register");
 }
 
 //function for loading entries page, loads all the pantries into a selection dropdown
@@ -543,15 +548,15 @@ exports.update_user = function (req, res) {
 
 
 
-    // try{
+    try{
     console.log('adding message!');
     dbUser.update(UserId, email, fname, sname, password, ispantry, PantryID)
     console.log('redirecting!');
     res.redirect("/adminpanelUser");
-    // }
-    // catch (err) {
-    //     console.error('Error Updating user:', err);
-    // }
+    }
+    catch (err) {
+        console.error('Error Updating user:', err);
+    }
 
 }
 
@@ -577,7 +582,7 @@ exports.update_pantry = function (req, res) {
     res.redirect("/adminpanelPantry");
     }
     catch (err) {
-        console.error('Error Deleting admin:', err);
+        console.error('Error updating pantry:', err);
     }
 
 }
@@ -624,7 +629,7 @@ exports.update_admin = function (req, res) {
     res.redirect("/adminpanelAdmin");
     }
     catch (err) {
-        console.error('Error Deleting admin:', err);
+        console.error('Error updating admin:', err);
     }
         
 }
@@ -696,7 +701,7 @@ exports.post_delete_pantry = function (req, res) {
         res.redirect('/admin');
     }
     catch (err) {
-        console.error('Error Deleting User:', err);
+        console.error('Error Deleting pantry:', err);
     }
 }
 

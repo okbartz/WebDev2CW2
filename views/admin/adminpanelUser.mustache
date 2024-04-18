@@ -35,8 +35,8 @@
     <td>{{email}}</td>
     <td>{{ispantry}}</td>
     <td>{{pantryid}}</td>
-    <td><a href="#edit_thing">EDIT</a></td>
-    <td><a href="/deleteUser/{{_id}}">DELETE</a></td>
+    <td><a class="btn btn-warning" href="#edit_thing">EDIT</a></td>
+    <td><a class="btn btn-danger" href="/deleteUser/{{_id}}">DELETE</a></td>
     
   </tr>
 {{/entries}}
@@ -84,6 +84,8 @@
  
     <select id="pantryID" name="pantryID">
     
+    <option value="">None</option>
+
     {{#selectedPantries}}
 
     <option value={{_id}}>{{pantryTitle}}</option>
@@ -105,7 +107,7 @@
 </div>
 </section>
 
-
+{{>footer}}
 
 </body>
 </html>

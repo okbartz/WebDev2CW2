@@ -23,7 +23,7 @@
     <th>fooddesc</th>
     <th>user</th>
     <th>userid</th>
-    <th>EDIT</th>
+
     <th>DELETE</th>
 
   </tr>
@@ -35,22 +35,17 @@
     <td>{{published}}</td>
     <td>{{fooddesc}}</td>
     <td>{{user}}</td>
-    <td><a href="#edit_thing">EDIT</a></td>
-    <td><a href="/deletePost/{{_id}}">DELETE</a></td>
+
+    <td><a class="btn btn-danger" href="/deletePost/{{_id}}">DELETE</a></td>
     
   </tr>
 {{/entries}}
 </table>
 
 
-
-<section id="edit_thing">
-<h1>Edit Post</h1>
-
-
 </section>
 
-
+{{>footer}}
 
 </body>
 </html>

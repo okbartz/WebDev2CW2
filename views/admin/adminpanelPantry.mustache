@@ -31,8 +31,8 @@
     <td>{{pantryTitle}}</td>
     <td>{{pantryDescription}}</td>
     <td>{{pantryAddress}}</td>
-    <td><a href="#edit_thing">EDIT</a></td>
-    <td><a href="/deletePantry/{{_id}}">DELETE</a></td>
+    <td><a class="btn btn-warning" href="#edit_thing">EDIT</a></td>
+    <td><a class="btn btn-danger" href="/deletePantry/{{_id}}">DELETE</a></td>
     
   </tr>
 {{/entries}}
@@ -73,6 +73,9 @@
 </section>
 
 <a class="btn btn-primary" href="/addNewPantry">Add a new pantry</a >
+
+
+{{>footer}}
 
 </body>
 </html>
