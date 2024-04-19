@@ -11,6 +11,7 @@ This github repository is used for the second course work of web dev, this cours
   <li>Run "npm i" to install any necessary dependencies</li>
   <li>change directory into the root directory of the project</li>
   <li>run "node .\index.js"</li>
+  <li>open url "http://localhost:3000/" to view website locally</li>
 </ol> 
 
 <h1>User Details</h1>
