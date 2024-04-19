@@ -65,6 +65,20 @@ class UserDAO {
         password, ispantry, pantryid) {
         const that = this;
         bcrypt.hash(password, saltRounds).then(function (hash) {
+            
+            var entry;
+
+            if(password === ""){
+
+                 entry = {
+                    email: email, 
+                    fname: fname, 
+                    sname: sname,
+                    ispantry: ispantry,
+                    pantryid: pantryid
+                }; 
+
+            } else{
             var entry = {
                 email: email, 
                 fname: fname, 
@@ -73,7 +87,7 @@ class UserDAO {
                 ispantry: ispantry,
                 pantryid: pantryid
             }; 
-            
+            }
             that.db.update({_id: userid}, 
                 { $set: entry }, (err, numUsersUpdated, updatedUser) => {
                 if (err) return callback(null, err);
@@ -157,6 +171,29 @@ class UserDAO {
                     resolve(entries);
                     //to see what the returned data looks like
                     console.log('function all() returns: ', entries);
+                }
+            });
+        })
+    }
+
+    //get all users
+    lookupUser(userID) {
+        //return a Promise object, which can be resolved or rejected
+        return new Promise((resolve, reject) => {
+            //use the find() function of the database to get the data,
+            //error first callback function, err for error, entries for data
+            var db = this.db;
+            
+            db.find({"_id": userID}, function (err, entries) {
+                //if error occurs reject Promise
+                if (err) {
+                    reject(err);
+                    //if no error resolve the promise & return the data
+                } else {
+
+                    resolve(entries);
+                    //to see what the returned data looks like
+                    console.log('function lookup() returns: ', entries);
                 }
             });
         })

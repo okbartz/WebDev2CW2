@@ -31,7 +31,7 @@
     <td>{{pantryTitle}}</td>
     <td>{{pantryDescription}}</td>
     <td>{{pantryAddress}}</td>
-    <td><a class="btn btn-warning" href="#edit_thing">EDIT</a></td>
+    <td><a class="btn btn-warning" href="/getPantryDetails/{{_id}}">EDIT</a></td>
     <td><a class="btn btn-danger" href="/deletePantry/{{_id}}">DELETE</a></td>
     
   </tr>
@@ -47,21 +47,21 @@
     <div class="form-group">
         
         <label for="PantryID">PantryID to change details for</label>
-        <input type="text" class="form-control" id="PantryID" name="PantryID" placeholder="Enter PantryID" required>
+        <input type="text" value="{{pantIDvalue}}" class="form-control" id="PantryID" name="PantryID" placeholder="Enter PantryID" required>
     </div>
     <div class="form-group">
        
         <label for="pantryTitle">Pantry Title</label>
-        <input type="text" class="form-control" id="pantryTitle" name="pantryTitle" placeholder="Enter pantryTitle" required maxlength="100">
+        <input type="text" value="{{pantTitleValue}}" class="form-control" id="pantryTitle" name="pantryTitle" placeholder="Enter pantryTitle" required maxlength="100">
     </div>
     <div class="form-group">
        
         <label for="pantryDescription">Pantry Description</label>
-        <input type="text" class="form-control" id="pantryDescription" name="pantryDescription" placeholder="Enter pantryDescription" required maxlength="100">
+        <input type="text" value="{{pantDescValue}}" class="form-control" id="pantryDescription" name="pantryDescription" placeholder="Enter pantryDescription" required maxlength="100">
     </div>
     <div class="form-group">
         <label for="pantryAddress">Pantry Address</label>
-        <input type="text" class="form-control" id="pantryAddress" name="pantryAddress" placeholder="Enter pantryAddress" required maxlength="200">
+        <input type="text" value="{{pantAddressValue}}" class="form-control" id="pantryAddress" name="pantryAddress" placeholder="Enter pantryAddress" required maxlength="200">
     </div>
        
     <br>

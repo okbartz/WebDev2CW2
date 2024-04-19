@@ -11,6 +11,7 @@ const dbUser = new require("../models/userModel");
 const dbAdmin = new require("../models/adminModel");
 const dbContact = require("../models/contactModel.js");
 const jwt = require("jsonwebtoken");
+const e = require('express');
 
 
 
@@ -106,8 +107,8 @@ exports.update_user = function (req, res) {
     const ispantry = req.body.ispantry;
     const PantryID = req.body.pantryID;
 
-    if (!email || !password) {
-        return res.status(401).send('No email or no password');
+    if (!email ) {
+        return res.status(401).send('No email');
     }
 
     if (email > 200) {
@@ -212,6 +213,245 @@ exports.update_admin = function (req, res) {
         console.error('Error updating admin:', err);
     }
         
+}
+
+//function for grabbing details of user and inserting into fields
+exports.get_user_details = function (req, res) {
+    console.log('Copying Details', req.params.userid);
+    let userID = req.params.userid;
+    userDao.lookupUser(userID)
+        .then((SpecificUserList) => {
+
+            dbUser.getAllEntries()
+            .then((UserList) => {
+    
+                dbPantries.getAllEntries()
+                    .then((PantryList) => {
+
+                        var emailvalue1
+                        var userid1 
+                        var fname1 
+                        var sname1 
+                        var ispant1 
+                        var pantid1 
+                           
+                        SpecificUserList.forEach(function(entry) {
+                            console.log("Getting email:", entry.email);
+                            console.log("Getting first name:", entry.fname);
+                            console.log("Getting second name:", entry.fname);
+                            
+                            console.log("Getting ispantry name:", entry.ispantry);
+                            console.log("Getting pantryid name:", entry.pantryid);
+            
+                            emailvalue1 = entry.email
+                            userid1 = entry._id
+                            fname1 = entry.fname
+                            sname1 = entry.sname
+                            ispant1 = entry.ispantry
+                            pantid1 = entry.pantryid
+                            console.log("email value: ", emailvalue1)
+            
+                        });
+
+
+                        res.render("admin/adminpanelUser", {
+                            admin: "admin",
+                            user: "user",
+                            entries: UserList,
+                            selectedPantries: PantryList,
+                            
+                            emailvalue: emailvalue1,
+                            idvalue: userid1,
+                            fnamevalue: fname1,
+                            snamevalue: sname1,
+                            ispantvalue: ispant1,
+                            pantidvalue: pantid1
+                            
+                        });
+                    }).catch((err) => {
+                        // console.log("promise rejected", err);
+                        res.redirect("/login")
+                    });
+                console.log("promise resolved");
+            })
+            .catch((err) => {
+                // console.log("promise rejected", err);
+                res.redirect("/login")
+            });
+
+                
+    
+
+        })
+        .catch((err) => {
+            // console.log("promise rejected", err);
+            res.redirect("/adminpanel")
+        });
+
+    // try {
+    //     console.log('deleting user', req.params.userid);
+    //     let user = req.params.userid;
+    //     console.log("userid", user);
+    //     userDao.delete(user);
+    //     res.redirect('/adminpanelUser');
+    // }
+    // catch (err) {
+    //     console.error('Error Deleting User:', err);
+    // }
+
+}
+
+//function for grabbing details of admin and inserting into fields
+exports.get_admin_details = function (req, res) {
+    console.log('Copying Details', req.params.userid);
+    let userID = req.params.userid;
+    adminDao.lookupUser(userID)
+        .then((SpecificUserList) => {
+
+            dbAdmin.getAllEntries()
+            .then((UserList) => {
+
+                        var emailvalue1
+                        var userid1 
+                        var fname1 
+                        var sname1 
+                        
+                        
+                           
+                        SpecificUserList.forEach(function(entry) {
+                            console.log("Getting email:", entry.email);
+                            console.log("Getting first name:", entry.fname);
+                            console.log("Getting second name:", entry.fname);
+                            
+                            console.log("Getting ispantry name:", entry.ispantry);
+                            console.log("Getting pantryid name:", entry.pantryid);
+            
+                            emailvalue1 = entry.email
+                            userid1 = entry._id
+                            fname1 = entry.fname
+                            sname1 = entry.sname
+                            
+                           
+                            console.log("email value: ", emailvalue1)
+            
+                        });
+
+
+                        res.render("admin/adminpanelAdmin", {
+                            admin: "admin",
+                            user: "user",
+                            entries: UserList,
+                            
+                            emailvalue: emailvalue1,
+                            idvalue: userid1,
+                            fnamevalue: fname1,
+                            snamevalue: sname1,
+                            
+                            
+                            
+                        });
+                    
+                console.log("promise resolved");
+            })
+            .catch((err) => {
+                // console.log("promise rejected", err);
+                res.redirect("/login")
+            });
+
+                
+    
+
+        })
+        .catch((err) => {
+            // console.log("promise rejected", err);
+            res.redirect("/adminpanel")
+        });
+
+    // try {
+    //     console.log('deleting user', req.params.userid);
+    //     let user = req.params.userid;
+    //     console.log("userid", user);
+    //     userDao.delete(user);
+    //     res.redirect('/adminpanelUser');
+    // }
+    // catch (err) {
+    //     console.error('Error Deleting User:', err);
+    // }
+
+}
+
+//function for grabbing details of pantry and inserting into fields
+exports.get_pantry_details = function (req, res) {
+    console.log('Copying Details', req.params.pantryid);
+    let Pantryid = req.params.pantryid;
+    pantryDAO.getEntriesById(Pantryid)
+        .then((SpecificPantryList) => {
+
+            dbPantries.getAllEntries()
+            .then((pantryList) => {
+
+                       
+                        var pantId1
+                        var pantTitle1
+                        var pantDesc1 
+                        var pantAddress1 
+                        
+                        
+                           
+                        SpecificPantryList.forEach(function(entry) {
+                           
+                            
+                            pantId1 = entry._id
+                            pantTitle1 = entry.pantryTitle
+                            pantDesc1 = entry.pantryDescription
+                            pantAddress1 = entry.pantryAddress
+                            
+                           
+            
+                        });
+
+
+                        res.render("admin/adminpanelPantry", {
+                            admin: "admin",
+                            user: "user",
+                            entries: pantryList,
+                            
+                            pantIDvalue: pantId1,
+                            pantTitleValue: pantTitle1,
+                            pantDescValue: pantDesc1,
+                            pantAddressValue: pantAddress1,
+                            
+                            
+                            
+                        });
+                    
+                console.log("promise resolved");
+            })
+            .catch((err) => {
+                // console.log("promise rejected", err);
+                res.redirect("/login")
+            });
+
+                
+    
+
+        })
+        .catch((err) => {
+            // console.log("promise rejected", err);
+            res.redirect("/adminpanel")
+        });
+
+    // try {
+    //     console.log('deleting user', req.params.userid);
+    //     let user = req.params.userid;
+    //     console.log("userid", user);
+    //     userDao.delete(user);
+    //     res.redirect('/adminpanelUser');
+    // }
+    // catch (err) {
+    //     console.error('Error Deleting User:', err);
+    // }
+
 }
 
 

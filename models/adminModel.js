@@ -100,6 +100,29 @@ class AdminDAO {
         })
     }
 
+    //get all users
+    lookupUser(userID) {
+        //return a Promise object, which can be resolved or rejected
+        return new Promise((resolve, reject) => {
+            //use the find() function of the database to get the data,
+            //error first callback function, err for error, entries for data
+            var db = this.db;
+            
+            db.find({"_id": userID}, function (err, entries) {
+                //if error occurs reject Promise
+                if (err) {
+                    reject(err);
+                    //if no error resolve the promise & return the data
+                } else {
+
+                    resolve(entries);
+                    //to see what the returned data looks like
+                    console.log('function lookup() returns: ', entries);
+                }
+            });
+        })
+    }
+
     //function for deleting an admin with id
     delete(userid) {
         this.db.remove({
@@ -119,6 +142,18 @@ class AdminDAO {
         password) {
         const that = this;
         bcrypt.hash(password, saltRounds).then(function (hash) {
+            
+            if(password === ""){
+
+                var entry = {
+                    userid: userid,
+                    email: email, 
+                    fname: fname, 
+                    sname: sname,
+                    admin: true
+                }; 
+
+           } else{
             var entry = {
                 userid: userid,
                 email: email, 
@@ -127,6 +162,8 @@ class AdminDAO {
                 password: hash,
                 admin: true
             }; 
+           }
+            
             
             that.db.update({_id: userid}, 
                 { $set: entry }, (err, numUsersUpdated, updatedUser) => {

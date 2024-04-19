@@ -47,6 +47,11 @@ router.get('/posts/:userid',verify, controller.show_user_entries);
     router.post('/editAdmin',verifyAdmin, controllerAdmin.update_admin);
     router.post('/editPantry',verifyAdmin, controllerAdmin.update_pantry);
 
+    router.get('/getUserDetails/:userid',verifyAdmin, controllerAdmin.get_user_details);
+    router.get('/getAdminDetails/:userid',verifyAdmin, controllerAdmin.get_admin_details);
+    router.get('/getPantryDetails/:pantryid',verifyAdmin, controllerAdmin.get_pantry_details);
+
+
     //ADMIN PANEL ROUTES
     router.get('/admin',verifyAdmin, controllerAdmin.show_admin_page);
     router.get('/adminPanelUser',verifyAdmin, controllerAdmin.show_admin_users);
