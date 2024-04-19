@@ -25,14 +25,7 @@ class AdminDAO {
             sname: 'doe', 
             password: "$2b$10$NwOTFkWPsGKKy3eP8WJZUuidqW46ZAD26xzWaPdzdbFHCy3Yk1Cxi"
         });
-        this.db.insert({
-            admin: 'true',
-            email: 'ExampleEmail2@email.com',
-            fname: 'john', 
-            sname: 'doe', 
-            password:
-                '$2b$10$bnEYkqZM.MhEF/LycycymOeVwkQONq8kuAUGx6G5tF9UtUcaYDs3S'
-        }); return
+         return
         this;
     }
 
