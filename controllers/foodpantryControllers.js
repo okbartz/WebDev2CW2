@@ -26,7 +26,7 @@ exports.show_about_page = function (req, res) {
         } else {
             try {
                 const admin1 = decoded.admin.admin;
-
+                //Check if the user is a admin
                 if (admin1 === "true") {
                     res.render("about", {
                         user: "user",
@@ -35,6 +35,7 @@ exports.show_about_page = function (req, res) {
 
                 }
             } catch (error) {
+                
                 console.error(error);
                 const username = decoded.username;
                 console.log('Getting Username:', username);
@@ -45,6 +46,10 @@ exports.show_about_page = function (req, res) {
                     user: "user"
                 });
             };
+            //if not an admin then a normal user
+            res.render("about", {
+                user: "user"
+            });
         }
     });
 
@@ -88,6 +93,7 @@ exports.post_new_entry = function (req, res) {
 
     const myCookieValue = req.cookies['jwt'];
 
+    // Checking if there is a cookie meaning there is a user logged in.
     jwt.verify(myCookieValue, process.env.ACCESS_TOKEN_SECRET, function (err, decoded) {
         if (err) {
             console.error('Error verifying token:', err);
@@ -98,11 +104,13 @@ exports.post_new_entry = function (req, res) {
                 res.status(500).send("Error not a user");
                 return;
             }
+            //Setting variables
             const userid = decoded.userid;
             const username = decoded.username;
             console.log('Getting Username:', username);
             console.log('Getting dec:', userid);
 
+            //Initializing pantry title variable
             var pantryTitle = "";
 
             console.log("grabbing specific pantry ")
@@ -111,7 +119,7 @@ exports.post_new_entry = function (req, res) {
             dbPantries.getEntriesById(req.body.pantryID)
                 .then((list) => {
 
-
+                    //Setting pantry title variable
                     list.forEach(function (entry) {
                         pantryTitle = entry.pantryTitle;
                         console.log('Checking Entry: ' + pantryTitle);
@@ -119,6 +127,7 @@ exports.post_new_entry = function (req, res) {
 
                     });
 
+                    //adding the post entry to the database
                     db.addEntry(req.body.foodtitle, req.body.foodimg, req.body.foodexp, req.body.fooddesc, username, userid, req.body.pantryID, pantryTitle);
                     res.redirect("/loggedIn");
                 })
@@ -135,9 +144,10 @@ exports.post_new_entry = function (req, res) {
 exports.new_message = function (req, res) {
     const myCookieValue = req.cookies['jwt'];
 
-
+    //Checking which type of user the user is.
     jwt.verify(myCookieValue, process.env.ACCESS_TOKEN_SECRET, function (err, decoded) {
         if (err) {
+            //normal user with no cookie
             console.log('Error verifying token:', err);
             res.render("contact", {
 
@@ -148,7 +158,7 @@ exports.new_message = function (req, res) {
 
             try {
                 const admin1 = decoded.admin.admin;
-
+                //admin user
                 if (admin1 === "true") {
                     res.render("contact", {
                         'title': 'Contact',
@@ -164,7 +174,7 @@ exports.new_message = function (req, res) {
                 console.log('Getting Username:', username);
                 console.log('Getting dec:', decoded);
 
-
+                //normal user
                 res.render("contact", {
                     'title': 'Contact',
                     user: "user"

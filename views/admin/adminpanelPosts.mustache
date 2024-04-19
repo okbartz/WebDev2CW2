@@ -23,6 +23,8 @@
     <th>fooddesc</th>
     <th>user</th>
     <th>userid</th>
+    <th>currentPantryid</th>
+    <th>currentPantryName</th>
 
     <th>DELETE</th>
 
@@ -35,6 +37,8 @@
     <td>{{fooddesc}}</td>
     <td>{{user}}</td>
     <td><a href="/posts/{{userid}}">{{userid}}<a></td>
+    <td>{{currentPantryid}}</td>
+    <td>{{currentPantryName}}</td>
 
     <td><a class="btn btn-danger" href="/deletePost/{{_id}}">DELETE</a></td>
     
@@ -42,6 +46,7 @@
 {{/entries}}
 </table>
 
+<a class="btn btn-primary" href="/addNewPost">Add a Post</a >
 
 </section>
 

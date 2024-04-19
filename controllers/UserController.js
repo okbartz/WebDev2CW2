@@ -21,12 +21,14 @@ exports.show_register_page = function (req, res) {
 
 // function for registering a new user
 exports.post_new_user = function (req, res) {
+    //Setting Variables
     const email = req.body.emailaddress;
     const fname = req.body.forename;
     const sname = req.body.surname;
     const password = req.body.pass;
     const confpassword = req.body.confpassword;
 
+    //Validating Variables
     if (!email || !password) {
         return res.status(401).send('No email or no password');
     }
@@ -55,6 +57,7 @@ exports.post_new_user = function (req, res) {
         return res.status(401).send('password too long or short');
     }
 
+    //Looking up if user exists in either the user and admin database
     dbUser.lookup(email, function (err, user) {
         if (err) {
             console.error("Error looking up user:", err);

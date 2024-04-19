@@ -50,10 +50,10 @@ exports.post_delete_admin = function (req, res) {
 exports.post_delete_posts = function (req, res) {
     try {
         console.log('deleting post', req.params.postid);
-        let user = req.params.postid;
-        console.log("postid", user);
-        db.delete(user);
-        res.redirect('/admin');
+        let postid = req.params.postid;
+        console.log("postid", postid);
+        db.delete(postid);
+        res.redirect('/adminpanelPosts');
     }
     catch (err) {
         console.error('Error Deleting post:', err);
@@ -67,7 +67,7 @@ exports.post_delete_message = function (req, res) {
         let messageid = req.params._id;
         console.log("postid", messageid);
         dbContact.delete(messageid);
-        res.redirect('/admin');
+        res.redirect('/adminpanelMessages');
     }
     catch (err) {
         console.error('Error Deleting Message:', err);
@@ -81,7 +81,7 @@ exports.post_delete_pantry = function (req, res) {
         let pantryid = req.params._id;
         console.log("pantryid", pantryid);
         dbPantries.delete(pantryid);
-        res.redirect('/admin');
+        res.redirect('/adminpanelPantry');
     }
     catch (err) {
         console.error('Error Deleting pantry:', err);
@@ -95,10 +95,11 @@ exports.post_delete_pantry = function (req, res) {
 exports.update_user = function (req, res) {
     console.log('processing update user');
     if (!req.body.UserId) {
-        res.status(400).send("Message must have an UserId.");
+        res.status(400).send("Field must have an UserId.");
         return;
     }
 
+    //Getting Variables
     const email = req.body.emailaddress;
     const fname = req.body.forename;
     const sname = req.body.surname;
@@ -107,6 +108,7 @@ exports.update_user = function (req, res) {
     const ispantry = req.body.ispantry;
     const PantryID = req.body.pantryID;
 
+    //Validating Variables
     if (!email ) {
         return res.status(401).send('No email');
     }
@@ -128,9 +130,9 @@ exports.update_user = function (req, res) {
     }
 
 
-
+    //Updating user
     try{
-    console.log('adding message!');
+    console.log('updating user!');
     dbUser.update(UserId, email, fname, sname, password, ispantry, PantryID)
     console.log('redirecting!');
     res.redirect("/adminpanelUser");
@@ -145,19 +147,33 @@ exports.update_user = function (req, res) {
 exports.update_pantry = function (req, res) {
     console.log('processing update pantry');
     if (!req.body.PantryID) {
-        res.status(400).send("Message must have an PantryID.");
+        res.status(400).send("Field must have an PantryID.");
         return;
     }
 
+    //getting variables
     const PantryID = req.body.PantryID;
     const pantryTitle = req.body.pantryTitle;
     const pantryDescription = req.body.pantryDescription;
     const pantryAddress = req.body.pantryAddress;
 
+    //validating variables
+    if (pantryTitle > 100) {
+        return res.status(401).send('Pantry Title is too long');
+    }
 
+    if (pantryDescription > 100) {
+        return res.status(401).send('Pantry Title is too long');
+    }
 
+    if (pantryAddress > 200) {
+        return res.status(401).send('Pantry Address is too long');
+    }
+    
+
+    //Updating pantry
     try{
-    console.log('adding message!');
+    console.log('updating pantry!');
     dbPantries.update(pantryTitle, pantryDescription, pantryAddress, PantryID)
     console.log('redirecting!');
     res.redirect("/adminpanelPantry");
@@ -172,16 +188,18 @@ exports.update_pantry = function (req, res) {
 exports.update_admin = function (req, res) {
     console.log('processing post_new_message controller');
     if (!req.body.UserId) {
-        res.status(400).send("Message must have an email address.");
+        res.status(400).send("Admin must have an user id.");
         return;
     }
 
+    //Getting Variables
     const email = req.body.emailaddress;
     const fname = req.body.forename;
     const sname = req.body.surname;
     const password = req.body.pass;
     const UserId = req.body.UserId;
 
+    //Validating Variables
     if (!email || !password) {
         return res.status(401).send('No email or no password');
     }
@@ -203,8 +221,9 @@ exports.update_admin = function (req, res) {
     }
 
 
+    //Updating admin
     try{
-    console.log('adding message!');
+    console.log('updating admin!');
     dbAdmin.update(UserId, email, fname, sname, password)
     console.log('redirecting!');
     res.redirect("/adminpanelAdmin");
@@ -219,15 +238,18 @@ exports.update_admin = function (req, res) {
 exports.get_user_details = function (req, res) {
     console.log('Copying Details', req.params.userid);
     let userID = req.params.userid;
+   //looking for the selected user
     userDao.lookupUser(userID)
         .then((SpecificUserList) => {
-
+            //Getting all the user entries
             dbUser.getAllEntries()
             .then((UserList) => {
     
+                //getting all the pantry entries
                 dbPantries.getAllEntries()
                     .then((PantryList) => {
 
+                        //Initializing variables
                         var emailvalue1
                         var userid1 
                         var fname1 
@@ -235,6 +257,7 @@ exports.get_user_details = function (req, res) {
                         var ispant1 
                         var pantid1 
                            
+                        //Setting Variables
                         SpecificUserList.forEach(function(entry) {
                             console.log("Getting email:", entry.email);
                             console.log("Getting first name:", entry.fname);
@@ -253,7 +276,7 @@ exports.get_user_details = function (req, res) {
             
                         });
 
-
+                        //Displaying the page and setting all the input fields
                         res.render("admin/adminpanelUser", {
                             admin: "admin",
                             user: "user",
@@ -270,7 +293,7 @@ exports.get_user_details = function (req, res) {
                         });
                     }).catch((err) => {
                         // console.log("promise rejected", err);
-                        res.redirect("/login")
+                        res.redirect("/adminpanelUser")
                     });
                 console.log("promise resolved");
             })
@@ -288,16 +311,7 @@ exports.get_user_details = function (req, res) {
             res.redirect("/adminpanel")
         });
 
-    // try {
-    //     console.log('deleting user', req.params.userid);
-    //     let user = req.params.userid;
-    //     console.log("userid", user);
-    //     userDao.delete(user);
-    //     res.redirect('/adminpanelUser');
-    // }
-    // catch (err) {
-    //     console.error('Error Deleting User:', err);
-    // }
+
 
 }
 
@@ -305,19 +319,21 @@ exports.get_user_details = function (req, res) {
 exports.get_admin_details = function (req, res) {
     console.log('Copying Details', req.params.userid);
     let userID = req.params.userid;
+    //looking for the selected admin
     adminDao.lookupUser(userID)
         .then((SpecificUserList) => {
-
+            //Getting all the admin entries
             dbAdmin.getAllEntries()
             .then((UserList) => {
 
+                        //Initializing variables
                         var emailvalue1
                         var userid1 
                         var fname1 
                         var sname1 
                         
                         
-                           
+                        //Setting Variables
                         SpecificUserList.forEach(function(entry) {
                             console.log("Getting email:", entry.email);
                             console.log("Getting first name:", entry.fname);
@@ -336,7 +352,7 @@ exports.get_admin_details = function (req, res) {
             
                         });
 
-
+                        //Displaying the page and setting all the input fields
                         res.render("admin/adminpanelAdmin", {
                             admin: "admin",
                             user: "user",
@@ -355,7 +371,7 @@ exports.get_admin_details = function (req, res) {
             })
             .catch((err) => {
                 // console.log("promise rejected", err);
-                res.redirect("/login")
+                res.redirect("/adminpanelAdmin")
             });
 
                 
@@ -367,16 +383,7 @@ exports.get_admin_details = function (req, res) {
             res.redirect("/adminpanel")
         });
 
-    // try {
-    //     console.log('deleting user', req.params.userid);
-    //     let user = req.params.userid;
-    //     console.log("userid", user);
-    //     userDao.delete(user);
-    //     res.redirect('/adminpanelUser');
-    // }
-    // catch (err) {
-    //     console.error('Error Deleting User:', err);
-    // }
+
 
 }
 
@@ -384,20 +391,21 @@ exports.get_admin_details = function (req, res) {
 exports.get_pantry_details = function (req, res) {
     console.log('Copying Details', req.params.pantryid);
     let Pantryid = req.params.pantryid;
+    //looking for the selected pantry
     pantryDAO.getEntriesById(Pantryid)
         .then((SpecificPantryList) => {
-
+            //Getting all the pantry entries
             dbPantries.getAllEntries()
             .then((pantryList) => {
 
-                       
+                       //Initializing variables
                         var pantId1
                         var pantTitle1
                         var pantDesc1 
                         var pantAddress1 
                         
                         
-                           
+                        //Setting Variables
                         SpecificPantryList.forEach(function(entry) {
                            
                             
@@ -410,7 +418,7 @@ exports.get_pantry_details = function (req, res) {
             
                         });
 
-
+                        //Displaying the page and setting all the input fields
                         res.render("admin/adminpanelPantry", {
                             admin: "admin",
                             user: "user",
@@ -429,7 +437,7 @@ exports.get_pantry_details = function (req, res) {
             })
             .catch((err) => {
                 // console.log("promise rejected", err);
-                res.redirect("/login")
+                res.redirect("/adminpanelPantry")
             });
 
                 
@@ -441,16 +449,6 @@ exports.get_pantry_details = function (req, res) {
             res.redirect("/adminpanel")
         });
 
-    // try {
-    //     console.log('deleting user', req.params.userid);
-    //     let user = req.params.userid;
-    //     console.log("userid", user);
-    //     userDao.delete(user);
-    //     res.redirect('/adminpanelUser');
-    // }
-    // catch (err) {
-    //     console.error('Error Deleting User:', err);
-    // }
 
 }
 
@@ -459,17 +457,24 @@ exports.get_pantry_details = function (req, res) {
 
 //function for displaying the add admin page
 exports.show_addAdmin = function (req, res) {
-    res.render("admin/addNewAdmin");
+    res.render("admin/addNewAdmin", {
+        'user': 'user',
+        'admin': 'admin',
+        
+
+    });
 }
 
 //function for adding a new admin
 exports.post_addAdmin = function (req, res) {
+    //Getting all the variables
     const email = req.body.emailaddress;
     const fname = req.body.forename;
     const sname = req.body.surname;
     const password = req.body.pass;
     const confpassword = req.body.confpassword;
 
+    //Validating all the variables
     if (!email || !password) {
         return res.status(401).send('No email or no password');
     }
@@ -498,6 +503,7 @@ exports.post_addAdmin = function (req, res) {
         return res.status(401).send('password too long or short');
     }
 
+    //Checking if a user or admin already exists
     dbUser.lookup(email, function (err, user) {
         if (err) {
             console.error("Error looking up user:", err);
@@ -529,7 +535,12 @@ exports.post_addAdmin = function (req, res) {
 
 //function for displaying the add pantry page
 exports.show_addPantry = function (req, res) {
-    res.render("admin/addNewPantry");
+    res.render("admin/addNewPantry", {
+        'user': 'user',
+        'admin': 'admin',
+        
+
+    });
 }
 
 //function for adding a new pantry
@@ -542,11 +553,183 @@ exports.post_addPantry = function (req, res) {
         return res.status(401).send('No email or no password');
     }
 
+        //validating variables
+        if (pantryTitle > 100) {
+            return res.status(401).send('Pantry Title is too long');
+        }
+    
+        if (pantryDescription > 100) {
+            return res.status(401).send('Pantry Title is too long');
+        }
+    
+        if (pantryAddress > 200) {
+            return res.status(401).send('Pantry Address is too long');
+        }
+
+
     dbPantries.addEntry(pantryTitle, pantryDescription, pantryAddress)
 
     res.redirect('/adminpanelPantry');
 
 };
+
+//function for displaying the add admin page
+exports.show_addUser = function (req, res) {
+    res.render("admin/addNewUser", {
+        'user': 'user',
+        'admin': 'admin',
+        
+
+    });
+}
+
+//function for adding a new admin
+exports.post_addUser = function (req, res) {
+    //Getting all the variables
+    const email = req.body.emailaddress;
+    const fname = req.body.forename;
+    const sname = req.body.surname;
+    const password = req.body.pass;
+    const confpassword = req.body.confpassword;
+
+    //Validating all the variables
+    if (!email || !password) {
+        return res.status(401).send('No email or no password');
+    }
+
+    if (password !== confpassword) {
+        return res.status(401).send('Passwords do not match');
+    }
+
+    if (email > 200) {
+        return res.status(401).send('Email is too long max lenght 200');
+    }
+
+    if (fname > 100) {
+        return res.status(401).send('forename is too long max lenght 100');
+    }
+
+    if (sname > 100) {
+        return res.status(401).send('forename is too long max lenght 100');
+    }
+
+    if (password < 8 && password > 100) {
+        return res.status(401).send('password too long or short');
+    }
+
+    if (confpassword < 8 && confpassword > 100) {
+        return res.status(401).send('password too long or short');
+    }
+
+    //Checking if a user or admin already exists
+    dbUser.lookup(email, function (err, user) {
+        if (err) {
+            console.error("Error looking up user:", err);
+            return res.status(500).send('Internal Server Error');
+        }
+
+        if (user) {
+            return res.status(401).send("User already exists: " + email);
+        }
+
+        dbAdmin.lookup(email, function (err, admin) {
+            if (err) {
+                console.error("Error looking up admin:", err);
+                return res.status(500).send('Internal Server Error');
+            }
+
+            if (admin) {
+                return res.status(401).send("Admin already exists: " + email);
+            }
+
+            // If user and admin dont exist, create the new user
+            userDao.create(email, fname, sname, password, confpassword);
+            res.redirect('/adminpanelUser');
+
+
+        });
+    });
+};
+
+//function for displaying the add post page
+exports.show_addPost = function (req, res) {
+    dbPantries.getAllEntries().then(
+        (entries) => {
+            res.render('admin/addNewPost', {
+                'user': 'user',
+                'admin': 'admin',
+                'selectedPantries': entries
+
+            });
+
+            console.log(entries);
+
+        }).catch((err) => {
+            console.log('error handling posts', err);
+        });
+}
+
+exports.post_addPost = function (req, res) {
+    console.log('processing post-new_entry controller');
+    if (!req.body.foodtitle) {
+        response.status(400).send("Entries must have an food title.");
+        return;
+    }
+
+    //Getting the jwt cookie
+    const myCookieValue = req.cookies['jwt'];
+
+    //Checking if the cookie exists
+    jwt.verify(myCookieValue, process.env.ACCESS_TOKEN_SECRET, function (err, decoded) {
+        if (err) {
+            console.error('Error verifying token:', err);
+            res.status(500).send("Error verifying token");
+            return;
+        } else {
+            if (!decoded.adminid) {
+                res.status(500).send("Error not a admin");
+                return;
+            }
+
+            //getting admin information
+            const adminid = decoded.adminid;
+            const username = decoded.username;
+            console.log('Getting Username:', username);
+            console.log('Getting dec:', adminid);
+
+            //initalizing variable
+            var pantryTitle = "";
+
+            console.log("grabbing specific pantry ")
+
+
+            dbPantries.getEntriesById(req.body.pantryID)
+                .then((list) => {
+
+                    //setting pantry title
+                    list.forEach(function (entry) {
+                        pantryTitle = entry.pantryTitle;
+                        console.log('Checking Entry: ' + pantryTitle);
+
+
+                    });
+
+                    //adding the new post entry
+                    db.addEntry(req.body.foodtitle, req.body.foodimg, req.body.foodexp, req.body.fooddesc, username, adminid, req.body.pantryID, pantryTitle);
+                    res.redirect("/adminpanelPosts");
+                })
+                .catch((err) => {
+                    console.log('promise rejected', err);
+                })
+
+
+        }
+    });
+}
+
+
+
+
 
 //ADMIN PAGES
 

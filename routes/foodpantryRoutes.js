@@ -64,8 +64,15 @@ router.get('/posts/:userid',verify, controller.show_user_entries);
     router.get('/addNewAdmin',verifyAdmin, controllerAdmin.show_addAdmin);
     router.post('/addNewAdmin',verifyAdmin, controllerAdmin.post_addAdmin);
 
+    router.get('/addNewUser',verifyAdmin, controllerAdmin.show_addUser);
+    router.post('/addNewUser',verifyAdmin, controllerAdmin.post_addUser);
+
     router.get('/addNewPantry',verifyAdmin, controllerAdmin.show_addPantry);
     router.post('/addNewPantry',verifyAdmin, controllerAdmin.post_addPantry);
+
+    router.get('/addNewPost',verifyAdmin, controllerAdmin.show_addPost);
+    router.post('/addNewPost',verifyAdmin, controllerAdmin.post_addPost);
+
 
 //LOGIN AND REGISTRATION ROUTES
     router.get('/register', controllerUser.show_register_page);

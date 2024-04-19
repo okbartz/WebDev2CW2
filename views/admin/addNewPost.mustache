@@ -1,0 +1,63 @@
+<html>
+<head>
+{{>header}}
+</head>
+{{>navbar}}
+<body>
+<div class="container">
+<h1>{{title}}</h1>
+<h2>New Post Page</h2>
+<form method="post" role="form" action="/addNewPost">
+<div class="form-group">
+<label for="foodtitle">Food Title</label>
+<input type="text" class="form-control" id="foodtitle" name="foodtitle"
+placeholder="name of food" required>
+</div>
+
+<div class="form-group">
+<label for="foodimg">food image</label>
+<input type="text" class="form-control" id="foodimg" name="foodimg"
+placeholder="Paste in the image url">
+</div>
+
+<div class="form-group">
+<label for="foodexp">food expiry</label>
+<input type="date" class="form-control" id="foodexp" name="foodexp"
+placeholder="Enter foods expiry" required>
+</div>
+
+<div class="form-group">
+<label for="fooddesc">food description</label>
+<textarea class="form-control" id="fooddesc" name="fooddesc"
+placeholder="Enter the foods description." rows="3" required maxlength="300">
+</textarea>
+</div>
+
+<div class="form-group">
+        <label id="pantryIDtext" for="pantryID">Selected Pantry Location</label>
+ 
+    <select id="pantryID" name="pantryID">
+    
+    {{#selectedPantries}}
+
+    <option value={{_id}}>{{pantryTitle}}</option>
+
+    {{/selectedPantries}}
+    </select>
+
+    </div>
+
+<div class="form-group">
+<input type="submit" value="Post entry" class="btn btn-primary">
+</div>
+
+
+
+</form>
+</div>
+
+{{>footer}}
+
+</body>
+
+</html>
