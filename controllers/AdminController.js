@@ -234,6 +234,65 @@ exports.update_admin = function (req, res) {
         
 }
 
+// function for updating a specific post
+exports.update_post = function (req, res) {
+    console.log('processing post_new_message controller');
+    if (!req.body.postid) {
+        res.status(400).send("Post must have an id.");
+        return;
+    }
+
+    //Getting Variables
+    const foodtitle = req.body.foodtitle;
+    const foodimg = req.body.foodimg;
+    const foodexp = req.body.foodexp;
+    const fooddesc = req.body.fooddesc;
+    const postid = req.body.postid;
+    const pantryID1 = req.body.pantryID;
+
+    //Validating Variables
+    if (!foodtitle || !foodexp || !fooddesc) {
+        return res.status(401).send('No foodtitle or no foodtitle or fooddesc');
+    }
+
+    if(fooddesc > 300){
+        return res.status(401).send('Food descrition too long');
+
+    }
+
+    
+    try{
+    
+
+    var pantryTitle = "";
+
+    dbPantries.getEntriesById(req.body.pantryID)
+    .then((list) => {
+
+        //Setting pantry title variable
+        list.forEach(function (entry) {
+            pantryTitle = entry.pantryTitle;
+            console.log('Checking Entry: ' + pantryTitle);
+
+
+        });
+
+        //updating the post entry
+        console.log('updating post!');
+        db.update(postid, foodtitle, foodimg, foodexp, fooddesc,pantryID1, pantryTitle)
+        console.log('redirecting!');
+        res.redirect("/adminpanelPosts");
+    })
+
+
+
+    }
+    catch (err) {
+        console.error('Error updating post:', err);
+    }
+        
+}
+
 //function for grabbing details of user and inserting into fields
 exports.get_user_details = function (req, res) {
     console.log('Copying Details', req.params.userid);
@@ -452,6 +511,89 @@ exports.get_pantry_details = function (req, res) {
 
 }
 
+//function for grabbing details of posts and inserting into fields
+exports.get_post_details = function (req, res) {
+    console.log('Copying Details', req.params.postid);
+    let Postid = req.params.postid;
+    //looking for the selected pantry
+    db.getEntriesById(Postid)
+        .then((SpecificPostList) => {
+            //Getting all the pantry entries
+            db.getAllEntries()
+            .then((postlist) => {
+
+                pantryDAO.getAllEntries().then(
+                    (selectPantries) => {
+                        
+            
+                    
+
+                       //Getting Variables
+                        var foodtitle1 
+                        var foodimg1 
+                        var foodexp1 
+                        var fooddesc1 
+                        var postid1
+                        var pantryID1 
+                        
+                        
+                        //Setting Variables
+                        SpecificPostList.forEach(function(entry) {
+                           
+                            
+                            pantryID1 = entry.currentPantryid
+                            foodtitle1 = entry.foodtitle
+                            foodimg1 = entry.foodimg
+                            foodexp1 = entry.foodexp
+                            fooddesc1 = entry.fooddesc
+                            postid1 = entry._id
+                            
+                            
+                           
+            
+                        });
+
+                        //Displaying the page and setting all the input fields
+                        res.render("admin/adminpanelPosts", {
+                            admin: "admin",
+                            user: "user",
+                            entries: postlist,
+                            selectedPantries: selectPantries,
+                            
+                            pantryIDValue: pantryID1,
+                            postTitleValue: foodtitle1,
+                            postIMGValue: foodimg1,
+                            postExpValue: foodexp1,
+                            postDescValue: fooddesc1,
+                            postPostIdValue: postid1,
+                           
+                            
+                            
+                        });
+                    
+                console.log("promise resolved");
+
+                }).catch((err) => {
+                console.log('error handling posts', err);
+             });
+                    
+            })
+            .catch((err) => {
+                // console.log("promise rejected", err);
+                res.redirect("/adminpanelPosts")
+            });
+
+                
+    
+
+        })
+        .catch((err) => {
+            // console.log("promise rejected", err);
+            res.redirect("/adminpanel")
+        });
+
+
+}
 
 //ADD FUNCTIONS
 
@@ -779,6 +921,7 @@ exports.show_admin_pantry = function (req, res) {
                 admin: "admin",
                 user: "user",
                 entries: list
+                
             });
             console.log("promise resolved");
         })
@@ -830,19 +973,37 @@ exports.show_admin_admins = function (req, res) {
 
 //function for showing the admin page for viewing posts
 exports.show_admin_posts = function (req, res) {
-    db.getAllEntries()
-        .then((list) => {
-            res.render("admin/adminpanelPosts", {
-                admin: "admin",
-                user: "user",
-                entries: list
-            });
-            console.log("promise resolved");
+    
+    //Getting all the pantry's
+    dbPantries.getAllEntries()
+        .then((pantrylist) => {
+            
+            //getting all the entries
+            db.getAllEntries()
+                    .then((list) => {
+                        res.render("admin/adminpanelPosts", {
+                            admin: "admin",
+                            user: "user",
+                            entries: list,
+                            selectedPantries: pantrylist
+
+                        });
+                        console.log("promise resolved");
+                    })
+                    .catch((err) => {
+                        // console.log("promise rejected", err);
+                        res.redirect("/login")
+                    });
+
+
         })
         .catch((err) => {
             // console.log("promise rejected", err);
             res.redirect("/login")
         });
+    
+    
+    
 
 
 }

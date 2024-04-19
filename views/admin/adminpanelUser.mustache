@@ -35,7 +35,7 @@
     <td>{{email}}</td>
     <td>{{ispantry}}</td>
     <td>{{pantryid}}</td>
-    <td><a class="btn btn-warning" href="/getUserDetails/{{_id}}">EDIT</a></td>
+    <td><a class="btn btn-warning" href="/getPostDetails/{{_id}}">EDIT</a></td>
     <td><a class="btn btn-danger" href="/deleteUser/{{_id}}">DELETE</a></td>
     
   </tr>
@@ -68,7 +68,7 @@
     </div>
        <div class="form-group">
         <label for="pass">Password</label>
-        <input type="password"  class="form-control" id="pass" name="pass" placeholder="Enter password" minlength="8" maxlength="100">
+        <input type="password"  class="form-control" id="pass" name="pass" placeholder="Enter password (leave empty if n/a)" minlength="8" maxlength="100">
     </div>
     <div class="form-group">
         <label id="ispantry" for="ispantry">user is pantry:</label>

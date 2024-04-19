@@ -41,15 +41,11 @@ exports.show_about_page = function (req, res) {
                 console.log('Getting Username:', username);
                 console.log('Getting dec:', decoded);
 
-
+                //if not an admin then a normal user
                 res.render("about", {
                     user: "user"
                 });
             };
-            //if not an admin then a normal user
-            res.render("about", {
-                user: "user"
-            });
         }
     });
 

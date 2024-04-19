@@ -93,6 +93,24 @@ class foodpantry {
         })
     }
 
+
+//function for getting entries by id
+getEntriesById(entryId) {
+    return new Promise((resolve, reject) => {
+        this.db.find({
+            '_id': entryId
+        }, function (err, entries) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(entries);
+                console.log('getEntriesById returns: ', entries);
+            }
+        })
+    })
+}
+
+
 //function for adding new entries to database
     addEntry(foodtitle, foodimg, foodexp, fooddesc, user, userid , pantryId, PantryName) {
         var entry = {
@@ -173,6 +191,42 @@ class foodpantry {
         })
     }
 
+    
+    update(itemid,foodtitle,foodimg,foodexp,fooddesc,
+        currentPantryid, PantryName) {
+        const that = this;
+        
+            
+                var entry = {
+                    
+                    foodtitle: foodtitle, 
+                    foodimg: foodimg, 
+                    foodexp: foodexp,
+                    fooddesc: fooddesc,
+                    currentPantryid: currentPantryid,
+                    currentPantryName: PantryName
+                }; 
+
+          
+            
+            
+            that.db.update({_id: itemid}, 
+                { $set: entry }, (err, numUsersUpdated, updatedUser) => {
+                if (err) return callback(null, err);
+                
+            })
+
+
+
+            
+        
+    }
+    
+    
+    
+    
+    
+    
     //functions for changing item to a specific pantry
     updatePantry(itemsid,currentPantryid,currentPantryName) {
         const that = this;

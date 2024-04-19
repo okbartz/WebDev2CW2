@@ -17,6 +17,7 @@
 
 <table style="width:100%">
   <tr>
+    <th>foodID</th>
     <th>foodtitle</th>
     <th>foodexp</th>
     <th>published</th>
@@ -25,12 +26,13 @@
     <th>userid</th>
     <th>currentPantryid</th>
     <th>currentPantryName</th>
-
+    <th>EDIT</th>
     <th>DELETE</th>
 
   </tr>
   {{#entries}}
   <tr>
+    <td>{{_id}}</td>
     <td>{{foodtitle}}</td>
     <td>{{foodexp}}</td>
     <td>{{published}}</td>
@@ -39,16 +41,74 @@
     <td><a href="/posts/{{userid}}">{{userid}}<a></td>
     <td>{{currentPantryid}}</td>
     <td>{{currentPantryName}}</td>
-
+    <td><a class="btn btn-warning" href="/getPostDetails/{{_id}}">EDIT</a></td>
     <td><a class="btn btn-danger" href="/deletePost/{{_id}}">DELETE</a></td>
     
   </tr>
 {{/entries}}
 </table>
 
-<a class="btn btn-primary" href="/addNewPost">Add a Post</a >
+<hr>
+<section id="edit_thing">
+<div class="container">
+<h1>Edit Post</h1>
 
-</section>
+<form method="post" role="form" action="/editPost">
+
+<div class="form-group">
+<label for="postid">Post ID</label>
+<input value="{{postPostIdValue}}" type="text" class="form-control" id="postid" name="postid"
+placeholder="ID of post to change" required>
+</div>
+
+
+<div class="form-group">
+<label for="foodtitle">Food Title</label>
+<input value="{{postTitleValue}}" type="text" class="form-control" id="foodtitle" name="foodtitle"
+placeholder="name of food" required>
+</div>
+
+<div class="form-group">
+<label for="foodimg">food image</label>
+<input value="{{postIMGValue}}" type="text" class="form-control" id="foodimg" name="foodimg"
+placeholder="Paste in the image url">
+</div>
+
+<div class="form-group">
+<label for="foodexp">food expiry</label>
+<input value="{{postExpValue}}" type="date" class="form-control" id="foodexp" name="foodexp"
+placeholder="Enter foods expiry" required>
+</div>
+
+<div class="form-group">
+<label for="fooddesc">food description</label>
+<textarea class="form-control" id="fooddesc" name="fooddesc"
+placeholder="Enter the foods description." rows="3" required maxlength="300">
+{{postDescValue}}
+</textarea>
+</div>
+
+<div class="form-group">
+        <label id="pantryIDtext" for="pantryID">Selected Pantry Location</label>
+ 
+    <select id="pantryID" name="pantryID">
+    
+    <option value="{{pantryIDValue}}">Current</option>
+    {{#selectedPantries}}
+
+    <option value={{_id}}>{{pantryTitle}}</option>
+
+    {{/selectedPantries}}
+    </select>
+
+    </div>
+
+<div class="form-group">
+<input type="submit" value="Edit" class="btn btn-primary">
+</div>
+</form>
+<a class="btn btn-primary" href="/addNewPost">Add an Post</a >
+</div>
 
 {{>footer}}
 
