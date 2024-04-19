@@ -131,13 +131,7 @@ class pantry {
 
 }
 
-
-
-
-
-
-
- 
-
-module.exports = pantry;
+const dao = new
+ pantry(); dao.init();
+module.exports = dao;
 

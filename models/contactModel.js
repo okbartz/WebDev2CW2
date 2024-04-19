@@ -109,7 +109,7 @@ class contactDao {
 
 
 }
-
-
-module.exports = contactDao;
+const dao = new
+ contactDao(); dao.init();
+module.exports = dao;
 

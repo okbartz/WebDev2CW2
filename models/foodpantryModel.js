@@ -230,7 +230,9 @@ function checkOOD(date){
 
 
 
- }
+ } const dao = new
+ foodpantry(); dao.init();
+module.exports = dao;
 
-module.exports = foodpantry;
+
 
