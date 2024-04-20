@@ -8,9 +8,8 @@
     "start": "node index.js"
   },
   "engines": {
-     "node": "20.11.0"
-    },
-    
+    "node": "20.11.0"
+  },
   "author": "bart",
   "license": "ISC",
   "dependencies": {
