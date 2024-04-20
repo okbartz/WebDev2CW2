@@ -83,7 +83,20 @@ exports.new_entries = function (req, res) {
 exports.post_new_entry = function (req, res) {
     console.log('processing post-new_entry controller');
     if (!req.body.foodtitle) {
-        response.status(400).send("Entries must have an food title.");
+        return res.status(401).send("Entries must have an food title.");
+        return;
+    }
+
+    if (req.body.foodtitle.length < 5){
+        return res.status(401).send("Entries must have an food title atleast 5 characters.");
+        return;
+    }
+    if (req.body.foodexp.length < 5){
+        return res.status(401).send("Entries must have an food title atleast 5 characters.");
+        return;
+    }
+    if (req.body.fooddesc.length < 5 || req.body.fooddesc.length > 300){
+        return res.status(401).send("Entries must have an food title atleast 5 characters. and be less than 300");
         return;
     }
 

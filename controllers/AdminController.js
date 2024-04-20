@@ -113,19 +113,19 @@ exports.update_user = function (req, res) {
         return res.status(401).send('No email');
     }
 
-    if (email > 200 && email < 5) {
-        return res.status(401).send('Email is too long max lenght 200');
+    if (email.length > 200 || email.length < 5) {
+        return res.status(401).send('Email is too long max length 200');
     }
 
-    if (fname > 100 && fname <3) {
-        return res.status(401).send('forename is too long max lenght 100');
+    if (fname.length > 100 || fname.length < 3) {
+        return res.status(401).send('forename is too long max length 100');
     }
 
-    if (sname > 100 && sname <3) {
-        return res.status(401).send('forename is too long max lenght 100');
+    if (sname.length > 100 || sname.length < 3) {
+        return res.status(401).send('forename is too long max length 100');
     }
 
-    if (password < 8 && password > 100) {
+    if (password.length < 8 || password.length > 100) {
         return res.status(401).send('password too long or short');
     }
 
@@ -158,15 +158,15 @@ exports.update_pantry = function (req, res) {
     const pantryAddress = req.body.pantryAddress;
 
     //validating variables
-    if (pantryTitle > 100) {
+    if (pantryTitle.lenght > 100 || pantryTitle.lenght < 5) {
         return res.status(401).send('Pantry Title is too long');
     }
 
-    if (pantryDescription > 100) {
+    if (pantryDescription.lenght > 100 || pantryDescription.lenght < 5) {
         return res.status(401).send('Pantry Title is too long');
     }
 
-    if (pantryAddress > 200) {
+    if (pantryAddress.lenght > 200 || pantryAddress.lenght < 5) {
         return res.status(401).send('Pantry Address is too long');
     }
     
@@ -204,19 +204,19 @@ exports.update_admin = function (req, res) {
         return res.status(401).send('No email or no password');
     }
 
-    if (email > 200 && email < 5) {
-        return res.status(401).send('Email is too long max lenght 200');
+    if (email.length > 200 || email.length < 5) {
+        return res.status(401).send('Email is too long max length 200');
     }
 
-    if (fname > 100 && fname <3) {
-        return res.status(401).send('forename is too long max lenght 100');
+    if (fname.length > 100 || fname.length < 3) {
+        return res.status(401).send('forename is too long max length 100');
     }
 
-    if (sname > 100 && sname <3) {
-        return res.status(401).send('forename is too long max lenght 100');
+    if (sname.length > 100 || sname.length < 3) {
+        return res.status(401).send('forename is too long max length 100');
     }
 
-    if (password < 8 && password > 100) {
+    if (password.length < 8 || password.length > 100) {
         return res.status(401).send('password too long or short');
     }
 
@@ -255,10 +255,19 @@ exports.update_post = function (req, res) {
         return res.status(401).send('No foodtitle or no foodtitle or fooddesc');
     }
 
-    if(fooddesc > 300){
-        return res.status(401).send('Food descrition too long');
-
+    if (req.body.foodtitle.length < 5){
+        return res.status(401).send("Entries must have an food title atleast 5 characters.");
+        return;
     }
+    if (req.body.foodexp.length < 5){
+        return res.status(401).send("Entries must have an food title atleast 5 characters.");
+        return;
+    }
+    if (req.body.fooddesc.length < 5 || req.body.fooddesc.length > 300){
+        return res.status(401).send("Entries must have an food title atleast 5 characters. and be less than 300");
+        return;
+    }
+
 
     
     try{
@@ -625,23 +634,23 @@ exports.post_addAdmin = function (req, res) {
         return res.status(401).send('Passwords do not match');
     }
 
-    if (email > 200 && email < 5) {
-        return res.status(401).send('Email is too long max lenght 200');
+    if (email.length > 200 || email.length < 5) {
+        return res.status(401).send('Email is too long max length 200');
     }
 
-    if (fname > 100 && fname <3) {
-        return res.status(401).send('forename is too long max lenght 100');
+    if (fname.length > 100 || fname.length < 3) {
+        return res.status(401).send('forename is too long max length 100');
     }
 
-    if (sname > 100 && sname <3) {
-        return res.status(401).send('forename is too long max lenght 100');
+    if (sname.length > 100 || sname.length < 3) {
+        return res.status(401).send('forename is too long max length 100');
     }
 
-    if (password < 8 && password > 100) {
+    if (password.length < 8 || password.length > 100) {
         return res.status(401).send('password too long or short');
     }
 
-    if (confpassword < 8 && confpassword > 100) {
+    if (confpassword.length < 8 || confpassword.length > 100) {
         return res.status(401).send('password too long or short');
     }
 
@@ -696,15 +705,15 @@ exports.post_addPantry = function (req, res) {
     }
 
         //validating variables
-        if (pantryTitle > 100) {
+        if (pantryTitle.length > 100 || pantryTitle.length < 5) {
             return res.status(401).send('Pantry Title is too long');
         }
     
-        if (pantryDescription > 100) {
+        if (pantryDescription.length > 100 || pantryDescription.length < 5) {
             return res.status(401).send('Pantry Title is too long');
         }
     
-        if (pantryAddress > 200) {
+        if (pantryAddress.length > 200 || pantryDescription.length < 5) {
             return res.status(401).send('Pantry Address is too long');
         }
 
@@ -728,11 +737,11 @@ exports.show_addUser = function (req, res) {
 //function for adding a new admin
 exports.post_addUser = function (req, res) {
     //Getting all the variables
-    const email = req.body.emailaddress;
-    const fname = req.body.forename;
-    const sname = req.body.surname;
-    const password = req.body.pass;
-    const confpassword = req.body.confpassword;
+    var email = req.body.emailaddress;
+    var fname = req.body.forename;
+    var sname = req.body.surname;
+    var password = req.body.pass;
+    var confpassword = req.body.confpassword;
 
     //Validating all the variables
     if (!email || !password) {
@@ -743,23 +752,23 @@ exports.post_addUser = function (req, res) {
         return res.status(401).send('Passwords do not match');
     }
 
-    if (email > 200 && email < 5) {
-        return res.status(401).send('Email is too long max lenght 200');
+    if (email.length > 200 || email.length < 5) {
+        return res.status(401).send('Email is too long max length 200');
     }
 
-    if (fname > 100 && fname <3) {
-        return res.status(401).send('forename is too long max lenght 100');
+    if (fname.length > 100 || fname.length < 3) {
+        return res.status(401).send('forename is too long max length 100');
     }
 
-    if (sname > 100 && sname <3) {
-        return res.status(401).send('forename is too long max lenght 100');
+    if (sname.length > 100 || sname.length < 3) {
+        return res.status(401).send('forename is too long max length 100');
     }
 
-    if (password < 8 && password > 100) {
+    if (password.length < 8 || password.length > 100) {
         return res.status(401).send('password too long or short');
     }
 
-    if (confpassword < 8 && confpassword > 100) {
+    if (confpassword.length < 8 || confpassword.length > 100) {
         return res.status(401).send('password too long or short');
     }
 
@@ -814,9 +823,23 @@ exports.show_addPost = function (req, res) {
 exports.post_addPost = function (req, res) {
     console.log('processing post-new_entry controller');
     if (!req.body.foodtitle) {
-        response.status(400).send("Entries must have an food title.");
-        return;
+        return res.status(401).send("Entries must have an food title.");
+        
     }
+
+    if (req.body.foodtitle.length < 5){
+        return res.status(401).send("Entries must have an food title atleast 5 characters.");
+  
+    }
+    if (req.body.foodexp.length < 5){
+        return res.status(401).send("Entries must have an food title atleast 5 characters.");
+        
+    }
+    if (req.body.fooddesc.length < 5 || req.body.fooddesc.length > 300){
+        return res.status(401).send("Entries must have an food title atleast 5 characters. and be less than 300");
+        
+    }
+
 
     //Getting the jwt cookie
     const myCookieValue = req.cookies['jwt'];

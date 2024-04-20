@@ -37,23 +37,23 @@ exports.post_new_user = function (req, res) {
         return res.status(401).send('Passwords do not match');
     }
 
-    if (email > 200 && email < 5) {
-        return res.status(401).send('Email is too long max lenght 200 or too short');
+    if (email.length > 200 || email.length < 5) {
+        return res.status(401).send('Email is too long max length 200 or too short');
     }
 
-    if (fname > 100 && fname < 3) {
-        return res.status(401).send('forename is too long max lenght 100');
+    if (fname.length > 100 || fname.length < 3) {
+        return res.status(401).send('forename is too long max length 100');
     }
 
-    if (sname > 100 && sname < 3) {
-        return res.status(401).send('forename is too long max lenght 100');
+    if (sname.length > 100 || sname.length < 3) {
+        return res.status(401).send('forename is too long max length 100');
     }
 
-    if (password < 8 && password > 100) {
+    if (password.length < 8 || password.length > 100) {
         return res.status(401).send('password too long or short');
     }
 
-    if (confpassword < 8 && confpassword > 100) {
+    if (confpassword.length < 8 || confpassword.length > 100) {
         return res.status(401).send('password too long or short');
     }
 
