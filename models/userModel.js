@@ -1,5 +1,5 @@
 const Datastore = require("gray-nedb");
-const bcrypt = require('bcrypt');const pantry = require("./pantryModel");
+const bcrypt = require('bcryptjs');const pantry = require("./pantryModel");
  const
     saltRounds = 10;
 class UserDAO {
