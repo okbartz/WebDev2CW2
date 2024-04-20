@@ -11,21 +11,21 @@
     <div class="form-group">
         {{user-name-error}}
         <label for="pantryTitle">Pantry Title</label>
-        <input type="text" class="form-control" id="pantryTitle" name="pantryTitle" placeholder="Enter pantry Title" required maxlength="200"> 
+        <input type="text" class="form-control" id="pantryTitle" name="pantryTitle" placeholder="Enter pantry Title" minlength="5"  required maxlength="200"> 
     </div>
     <div class="form-group">
        
         <label for="pantryDescription">Pantry Description</label>
-        <input type="text" class="form-control" id="pantryDescription" name="pantryDescription" placeholder="Enter Pantry Description" required maxlength="100">
+        <input type="text" class="form-control" id="pantryDescription" name="pantryDescription" placeholder="Enter Pantry Description"  minlength="5" required maxlength="100">
     </div>
     <div class="form-group">
        
         <label for="pantryAddress">PantryAddress </label>
-        <input type="text" class="form-control" id="pantryAddress" name="pantryAddress" placeholder="Enter Pantry Address" required maxlength="100">
+        <input type="text" class="form-control" id="pantryAddress" name="pantryAddress" placeholder="Enter Pantry Address" minlength="5" required maxlength="100">
     </div>
     <br>
     <div class="form-group">
-        <input type="submit" value="Register" class="btn btn-primary">
+        <input type="submit" value="Add" class="btn btn-primary">
     </div>
 </form>
 </div>

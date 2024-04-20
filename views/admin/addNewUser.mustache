@@ -11,17 +11,17 @@
     <div class="form-group">
         {{user-name-error}}
         <label for="emailaddress">Email address</label>
-        <input type="email" class="form-control" id="emailaddress" name="emailaddress" placeholder="Enter email address" required maxlength="200"> 
+        <input type="email" class="form-control" id="emailaddress" name="emailaddress" placeholder="Enter email address" minlength="5" required maxlength="200"> 
     </div>
     <div class="form-group">
        
         <label for="forename">Forename</label>
-        <input type="text" class="form-control" id="forename" name="forename" placeholder="Enter forename" required maxlength="100">
+        <input type="text" class="form-control" id="forename" name="forename" placeholder="Enter forename" minlength="3" required maxlength="100">
     </div>
     <div class="form-group">
        
         <label for="surname">Surname </label>
-        <input type="text" class="form-control" id="surname" name="surname" placeholder="Enter surname" required maxlength="100">
+        <input type="text" class="form-control" id="surname" name="surname" placeholder="Enter surname" minlength="3" required maxlength="100">
     </div>
     <div class="form-group">
         <label for="password">Password (8 characters minimum)</label>
@@ -33,7 +33,7 @@
     </div>
     <br>
     <div class="form-group">
-        <input type="submit" value="Register" class="btn btn-primary">
+        <input type="submit" value="Add" class="btn btn-primary">
     </div>
 </form>
 </div>

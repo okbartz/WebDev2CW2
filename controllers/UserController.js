@@ -37,15 +37,15 @@ exports.post_new_user = function (req, res) {
         return res.status(401).send('Passwords do not match');
     }
 
-    if (email > 200) {
-        return res.status(401).send('Email is too long max lenght 200');
+    if (email > 200 && email < 5) {
+        return res.status(401).send('Email is too long max lenght 200 or too short');
     }
 
-    if (fname > 100) {
+    if (fname > 100 && fname < 3) {
         return res.status(401).send('forename is too long max lenght 100');
     }
 
-    if (sname > 100) {
+    if (sname > 100 && sname < 3) {
         return res.status(401).send('forename is too long max lenght 100');
     }
 
@@ -131,7 +131,7 @@ exports.loggedIn_landing = function (req, res) {
                         db.getEntriesByPantryId("1234")
                             .then((list) => {
                                 res.render("entries", {
-                                    title: "Select Items",
+                                    title: "Items",
                                     entries: list,
                                     user: "user",
                                     pantry: "pantry"

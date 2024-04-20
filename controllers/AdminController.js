@@ -113,15 +113,15 @@ exports.update_user = function (req, res) {
         return res.status(401).send('No email');
     }
 
-    if (email > 200) {
+    if (email > 200 && email < 5) {
         return res.status(401).send('Email is too long max lenght 200');
     }
 
-    if (fname > 100) {
+    if (fname > 100 && fname <3) {
         return res.status(401).send('forename is too long max lenght 100');
     }
 
-    if (sname > 100) {
+    if (sname > 100 && sname <3) {
         return res.status(401).send('forename is too long max lenght 100');
     }
 
@@ -204,15 +204,15 @@ exports.update_admin = function (req, res) {
         return res.status(401).send('No email or no password');
     }
 
-    if (email > 200) {
+    if (email > 200 && email < 5) {
         return res.status(401).send('Email is too long max lenght 200');
     }
 
-    if (fname > 100) {
+    if (fname > 100 && fname <3) {
         return res.status(401).send('forename is too long max lenght 100');
     }
 
-    if (sname > 100) {
+    if (sname > 100 && sname <3) {
         return res.status(401).send('forename is too long max lenght 100');
     }
 
@@ -625,15 +625,15 @@ exports.post_addAdmin = function (req, res) {
         return res.status(401).send('Passwords do not match');
     }
 
-    if (email > 200) {
+    if (email > 200 && email < 5) {
         return res.status(401).send('Email is too long max lenght 200');
     }
 
-    if (fname > 100) {
+    if (fname > 100 && fname <3) {
         return res.status(401).send('forename is too long max lenght 100');
     }
 
-    if (sname > 100) {
+    if (sname > 100 && sname <3) {
         return res.status(401).send('forename is too long max lenght 100');
     }
 
@@ -743,15 +743,15 @@ exports.post_addUser = function (req, res) {
         return res.status(401).send('Passwords do not match');
     }
 
-    if (email > 200) {
+    if (email > 200 && email < 5) {
         return res.status(401).send('Email is too long max lenght 200');
     }
 
-    if (fname > 100) {
+    if (fname > 100 && fname <3) {
         return res.status(401).send('forename is too long max lenght 100');
     }
 
-    if (sname > 100) {
+    if (sname > 100 && sname <3) {
         return res.status(401).send('forename is too long max lenght 100');
     }
 
