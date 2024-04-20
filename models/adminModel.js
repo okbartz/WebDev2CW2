@@ -18,15 +18,24 @@ class AdminDAO {
    
     //initalize administrators
     init() {
-        this.db.insert({
-            admin: 'true',
-            email: 'ExampleEmail3@email.com', 
-            fname: 'bob', 
-            sname: 'doe', 
-            password: "$2b$10$NwOTFkWPsGKKy3eP8WJZUuidqW46ZAD26xzWaPdzdbFHCy3Yk1Cxi"
-        });
-         return
-        this;
+
+        var password1 = "password";
+
+        bcrypt.hash(password1, saltRounds)
+        .then(function (hash) {
+            password1 = hash;
+    
+            // This will ensure that db.insert() is called after the password is hashed
+            this.db.insert({
+                admin: 'true',
+                email: 'ExampleEmail3@email.com', 
+                fname: 'bob', 
+                sname: 'doe', 
+                password: password1
+            });
+        }.bind(this)); // Binding 'this' to the function context
+    
+        return this;
     }
 
     //create function for creating new admins

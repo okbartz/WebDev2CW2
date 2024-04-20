@@ -16,26 +16,37 @@ class UserDAO {
     // initialize user database
     // temp password is password
     init() {
-
-        this.db.insert({
-            email: 'ExampleEmail1@email.com', 
-            fname: 'bob', 
-            sname: 'doe', 
-            password: "$2b$10$NwOTFkWPsGKKy3eP8WJZUuidqW46ZAD26xzWaPdzdbFHCy3Yk1Cxi",
-            ispantry: "false",
-            pantryid: null
-        });
         
-        this.db.insert({
-            email: 'ExampleEmail2@email.com',
-            fname: 'john', 
-            sname: 'doe', 
-            password:
-                '$2b$10$NwOTFkWPsGKKy3eP8WJZUuidqW46ZAD26xzWaPdzdbFHCy3Yk1Cxi',
-                ispantry: "true",
-                pantryid: "5678"
-        }); return
-        this;
+        var password1 = "password";
+
+        bcrypt.hash(password1, saltRounds)
+        .then(function (hash) {
+            password1 = hash;
+
+            // This will ensure that db.insert() is called after the password is hashed
+            this.db.insert({
+                email: 'ExampleEmail1@email.com', 
+                fname: 'bob', 
+                sname: 'doe', 
+                password: password1,
+                ispantry: "false",
+                pantryid: null
+            });
+
+            this.db.insert({
+                email: 'ExampleEmail2@email.com',
+                fname: 'john', 
+                sname: 'doe', 
+                password: password1,
+                    ispantry: "true",
+                    pantryid: "5678"
+                
+            });
+
+        }.bind(this)); // Binding 'this' to the function context
+
+        return this;
+
     }
 
     //function for creating new users
