@@ -6,6 +6,37 @@ This github repository is used for the second course work of web dev, this cours
 
   
 </p>
+
+<h1>Feature List</h1>
+<h2>Visitor</h2>
+<ul>
+<li>Visitors can register their account by going to the register page and inputting the correct details into the fields.</li>
+</ul>
+<h2>User</h2>
+<ul>
+<li>Registered users can login into the system by going to the login page and inputting the correct details.</li>
+<li>Users can logout by pressing the logout button.</li>
+<li>Users can Provide food items by navigating the provide page and inputting the details of the items.</li>
+  </ul>
+<h2>Pantry</h2>
+  <ul>
+<li>Pantry users can Login into the system by going to the login page and inputting the correct details.</li>
+<li>Pantry users can logout by pressing the logout button.</li>
+<li>Pantry users can view and add items from the main pantry to their pantry.</li>
+    </ul>
+<h2>Admin</h2>
+    <ul>
+<li>Admins can login into the system by going to the login page and inputting the correct details.</li>
+<li>Admins can logout by pressing the logout button.</li>
+<li>Admins can Manage Items by going to the specific panel in the admin panel.</li>
+<li>Admins can Manage Users by going to the specific panel in the admin panel.</li>
+<li>Admins can Manage Pantry’s by going to the specific panel in the admin panel.</li>
+<li>Admins can View messages by going to the specific panel in the admin panel.</li>
+</ul>
+
+
+
+
 <h1>Setup Guide</h1>
 <ol type="1">
   <li>Run "npm i" to install any necessary dependencies</li>
